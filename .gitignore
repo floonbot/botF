@@ -1,10 +1,4 @@
 node_modules
-config.js
 package-lock.json
+config.js
 db.json
-floon.sql
-erreur.txt
-nsfw.js
-nsfw.json
-nsfw
-modi.txt
