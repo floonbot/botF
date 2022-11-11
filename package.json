@@ -1,0 +1,32 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/floonbot/Floonbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/floonbot/Floonbot/issues"
+  },
+  "homepage": "https://github.com/floonbot/Floonbot#readme",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "canvas": "^2.10.2",
+    "db": "^3.4.0",
+    "discord-canvas-easy": "^3.2.0",
+    "discord.js": "^14.6.0",
+    "fs": "^0.0.1-security",
+    "libquery": "^1.0.2",
+    "ls": "^0.2.1",
+    "ms": "^2.1.3",
+    "node-os-utils": "^1.3.7",
+    "systeminformation": "^5.12.13"
+  }
+}

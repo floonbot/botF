@@ -1,0 +1,10 @@
+node_modules
+config.js
+package-lock.json
+db.json
+floon.sql
+erreur.txt
+nsfw.js
+nsfw.json
+nsfw
+modi.txt
