@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const { pingE } = require("../../emoji.json");
+const { pingE } = require("../.././json/emoji.json");
 
 
 module.exports = {

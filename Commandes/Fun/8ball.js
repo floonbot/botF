@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { huitball, vraisfaux,  } = require("../../emoji.json");
+const { huitball, vraisfaux,  } = require("../.././json/emoji.json");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
@@ -68,6 +68,5 @@ module.exports = {
             let channel = await bot.channels.cache.get("1038859689833791528")
             channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
         }
-
     }
 }

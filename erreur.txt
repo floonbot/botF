@@ -1,0 +1,3 @@
+ReferenceError: Discord is not defined
+    at Object.run (C:\Users\Floon\OneDrive\Bureau\bot\Commandes\Information\ip.js:19:28)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)

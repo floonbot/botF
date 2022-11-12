@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const { randomE } = require("../../emoji.json");
+const { randomE } = require("../.././json/emoji.json");
 const { EmbedBuilder } = require('discord.js');
 
 

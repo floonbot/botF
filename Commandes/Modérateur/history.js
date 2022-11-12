@@ -5,7 +5,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 module.exports = {
 
     name: "history",
-    description: "Permet de connaitre toutes les infractions d'un utilisateur.",
+    description: "Permet de connaitre les infractions d'un utilisateur",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -13,7 +13,7 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "Voir les infractions d'un membre.",
+            description: "Voir les infractions d'un membre",
             required: false,
             autocomplete: false
         }

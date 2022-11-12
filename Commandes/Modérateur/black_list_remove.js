@@ -7,7 +7,7 @@ module.exports = {
     description: "Supprime un joueur de la blacklist.",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
-    category: "Informations",
+    category: "🧑🏻‍⚖️Modération",
     options: [
         {
             type: "user",

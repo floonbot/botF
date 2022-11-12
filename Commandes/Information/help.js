@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const { Sos } = require("../../emoji.json");
+const fs = require("fs");
+const { Sos, infoE } = require("../.././json/emoji.json");
 
 module.exports = {
 
@@ -14,6 +15,8 @@ module.exports = {
 
         let command;
 
+        await message.deferReply()
+
         try {
             if (!command) {
 
@@ -22,11 +25,28 @@ module.exports = {
                     if (!categories.includes(command.category)) categories.push(command.category)
                 })
 
+                let botEmbed = new Discord.EmbedBuilder()
+                .setColor("#FF5D00")
+                .setTitle(`Chargement de la commande bot-info !!`)
+                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+                .setDescription(`${Sos} **__Je cherche les commandes__** ${Sos}
+
+            > **Sur le serveur :** ${message.guild.name}
+             
+              \`Veuillez patienter\``)
+                .setTimestamp()
+                .setFooter({ text: "help" })
+
+            await message.followUp({ embeds: [botEmbed] }).then(async () => {
+
                 let Embed = new Discord.EmbedBuilder()
                     .setColor("#0070FF")
-                    .setTitle(`${Sos}Commandes du bot${Sos}`)
+                    .setTitle(`Info des commandes`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
-                    .setDescription(`Commands disponibles : \`${bot.commands.size}\`\nCatégories disponibles : \`${categories.length}\``)
+                    .setDescription(`${infoE} **__Nombre de commandes et catégories__**
+
+                    > Commands disponibles : \`${bot.commands.size}\`
+                    > Catégories disponibles : \`${categories.length}\``)
                     .setTimestamp()
                     .setFooter({ text: "Commandes du bot" })
 
@@ -36,13 +56,19 @@ module.exports = {
                     Embed.addFields({ name: `${cat}`, value: `${commands.map(cmd => `\`${cmd.name}\` : ${cmd.description}`).join("\n")}` })
                 })
 
-                await message.reply({ embeds: [Embed] })
-
+               setTimeout(async() => await message.editReply({ embeds: [Embed] }), 2000)
+            })
             }
 
         } catch (err) {
             console.log("Une erreur dans la commande help", err)
-        }
 
+            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+                return
+            })
+
+            let channel = await bot.channels.cache.get("1038859689833791528")
+            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+        }
     }
 }

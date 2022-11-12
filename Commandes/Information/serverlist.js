@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const { numStr } = require('../../../fonction')
+const { numStr } = require('../.././Loaders/fonction')
 module.exports = {
 
     name: 'serverlist',

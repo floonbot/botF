@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const { Floon } = require("../../emoji.json");
+const { Floon, infoE } = require("../.././json/emoji.json");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 
@@ -28,9 +28,9 @@ module.exports = {
 
             let botEmbed = new Discord.EmbedBuilder()
                 .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande bot-info`)
+                .setTitle(`Chargement de la commande bot-info !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${Floon}**__Je cherche les informations sur ${bot.user.tag}__**${Floon}
+                .setDescription(`${Floon} **__Je cherche les informations sur ${bot.user.tag}__** ${Floon}
 
             > **Sur le serveur :** ${message.guild.name}
              
@@ -41,11 +41,11 @@ module.exports = {
             await message.followUp({ embeds: [botEmbed] }).then(() => {
 
                 botEmbed = new Discord.EmbedBuilder()
-                    .setTitle(`${Floon} botInfo de ${bot.user.username} ${Floon}`)
+                    .setTitle(`Les informations de ${bot.user.username}`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
                     .setColor("#0070FF")
                     .setDescription(`
-                __**👆🏻Informations**__
+                __**${infoE} Informations**__
 
                 > **Développer :** \`Floon\`
                 > **Name / Tag :** \`${bot.user.username}\`
@@ -53,9 +53,7 @@ module.exports = {
                 > **Ping :** \`${bot.ws.ping}\`
                 > **Temps Uptime :** ${Math.round(bot.uptime / (1000 * 60 * 60)) + "h " + (Math.round(bot.uptime / (1000 * 60)) % 60) + "m " + (Math.round(bot.uptime / 1000) % 60) + "s "}
                
-                
-                __ ** 👆🏻Information Compte ** __
-
+                __ **${infoE} Information Compte ** __
 
                 > **Créer :** <t:${parseInt(bot.user.createdTimestamp / 1000)}:R>
                `)

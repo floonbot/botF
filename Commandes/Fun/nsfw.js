@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const { nsfwE } = require("../../emoji.json");
+const { nsfwE } = require("../.././json/emoji.json");
 const { pussy, aHarem } = require("../../json/saveImage/nsfw.json");
 const { AttachmentBuilder } = require("discord.js");
 

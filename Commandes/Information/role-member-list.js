@@ -4,7 +4,7 @@ const { PermissionsBitField, EmbedBuilder } = require("discord.js")
 module.exports = {
 
     name: "role-member-list",
-    description: "Permet de voir la liste des members possédant le rôle.",
+    description: "Permet de voir les membres avec le rôle",
     permission: "Aucune",
     dm: false,
     category: "👆🏻Information",

@@ -4,7 +4,7 @@ const cpu = osu.cpu
 const mem = osu.mem
 const os = osu.os
 const si = require('systeminformation');
-const { pc, cpuE, ram, ssd, Sys, cm, wifi } = require("../../emoji.json");
+const { pc, cpuE, ram, ssd, Sys, cm, wifi } = require("../.././json/emoji.json");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 

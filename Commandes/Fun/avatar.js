@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require("fs");
-const { avatar} = require("../../emoji.json");
+const { avatar} = require("../.././json/emoji.json");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
@@ -52,11 +52,9 @@ module.exports = {
 
 
                 avatarEmbed = new EmbedBuilder()
-                    .setAuthor({ name: `Avatar du membre ${user.tag}.`, iconURL: (user.displayAvatarURL({ dynamic: true })) })
                     .setColor("#00A705")
-                    .setTimestamp()
-                    .setFooter({ text: `Avatar du membre ${user.tag}.` })
-                    .setImage(user.displayAvatarURL({ dynamic: true, size: 128 }))
+                    .setDescription(`> ${avatar} **__L'avatar du membre ${user.tag}__**`)
+                    .setImage(user.displayAvatarURL({ dynamic: true}))
 
                 setTimeout(() => message.editReply({ embeds: [avatarEmbed], components: [row] }), 2000);
 
