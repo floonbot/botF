@@ -46,7 +46,7 @@ module.exports = {
             })
         } catch (err) {
 
-            console.log(`Une erreur dans la commande warnlist.`, err)
+            console.log(`Une erreur dans la commande warnlist`, err)
 
         }
     }

@@ -49,7 +49,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande admin-list.`, err);
+            console.log(`Une erreur dans la commande admin-list`, err);
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

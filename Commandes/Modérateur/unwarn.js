@@ -70,7 +70,7 @@ module.exports = {
                 db.query(`DELETE FROM warns WHERE guildId = '${message.guildId}' AND warn = '${warns}'`)
             } catch (err) {
 
-                console.log(`Une erreur dans la commande unwarn.`, err)
+                console.log(`Une erreur dans la commande unwarn`, err)
 
             }
         })

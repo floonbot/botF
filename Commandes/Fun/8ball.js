@@ -59,7 +59,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande 8ball.`, err)
+            console.log(`Une erreur dans la commande 8ball`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

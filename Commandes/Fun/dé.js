@@ -48,7 +48,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande dé.`, err)
+            console.log(`Une erreur dans la commande dé`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

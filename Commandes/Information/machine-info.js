@@ -24,7 +24,7 @@ module.exports = {
 
             const Embed = new EmbedBuilder()
                 .setColor("#FF5D00")
-                .setTitle(`Chargement des information sur la machine du bot`)
+                .setTitle(`Chargement des information sur la machine du bot !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
                 .setDescription(`${pc}**__Je cherche les informations de la machine__**${pc}
 
@@ -32,7 +32,7 @@ module.exports = {
 
             \`veuillez patienter\``)
                 .setTimestamp()
-                .setFooter({ text: "Info machine" })
+                .setFooter({ text: "Info-machine" })
 
             await message.followUp({ embeds: [Embed] }).then(async () => {
 
@@ -49,7 +49,7 @@ module.exports = {
                             .setLabel("Invite moi")
                             .setStyle(ButtonStyle.Link)
                             //Mettre le lien de ton bot
-                            .setURL("https://discord.com/api/oauth2/authorize?client_id=1010537525435183166&permissions=8&scope=bot%20applications.commands")
+                            .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
                     )
 
 
@@ -69,13 +69,13 @@ module.exports = {
                     `)
                     .setColor("#0070FF")
                     .setTimestamp()
-                    .setFooter({ text: "Info machine" })
+                    .setFooter({ text: "Info-machine" })
 
                 setTimeout(async () => await message.editReply({ embeds: [embed], components: [row] }), 1000)
             })
         } catch (err) {
 
-            console.log(`Une erreur dans la commande info_machine.`, err)
+            console.log(`Une erreur dans la commande info_machine`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack} `, () => {
                 return

@@ -40,7 +40,7 @@ module.exports = {
             })
         } catch (err) {
 
-            console.log(`Une erreur dans la commande blacklist.`, err)
+            console.log(`Une erreur dans la commande blacklist`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

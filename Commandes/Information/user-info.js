@@ -1,10 +1,11 @@
-const Discord = require("discord.js");
-const { EmbedBuilder } = require("discord.js")
+const fs = require("fs");
+const {userE, infoE} = require("../.././json/emoji.json")
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 
     name: "user-info",
-    description: "Permet de voir les informations d'un membre.",
+    description: "Permet de voir les informations d'un membre",
     dm: false,
     category: "👆🏻Information",
     options: [
@@ -16,7 +17,7 @@ module.exports = {
         },
     ],
 
-    async run(bot, message, args) {
+    async run(bot, message) {
 
         await message.deferReply()
 
@@ -24,37 +25,47 @@ module.exports = {
 
             const member = message.options.getMember("membre");
 
-            let userEmbed = new Discord.EmbedBuilder()
+            let userEmbed = new EmbedBuilder()
                 .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande user-info.`)
+                .setTitle(`Chargement de la commande user-info !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`Je cherche les inforamations du membre ${member.user.tag} veuillez patienter.`)
-                .setTimestamp()
+                .setDescription(`${userE} **__Je cherche les informations du membre__** ${userE}
+
+                > **Sur le serveur :** ${message.guild.name}
+     
+                 \`Veuillez patienter\``)
                 .setFooter({ text: "User-info" })
 
-            await message.followUp({ embeds: [userEmbed] })
+            await message.followUp({ embeds: [userEmbed] }).then(() => {
 
-            userEmbed = new Discord.EmbedBuilder()
-                .setTitle(`UserInfo de ${member.user.tag}.`)
+            userEmbed = new EmbedBuilder()
+                .setTitle(`Info de ${member.user.tag}`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
                 .setColor("#0070FF")
                 .setDescription(`
-                __**Informations**__
+               ${infoE} __**Informations**__
 
                 > **Name/Tag :** \`${member.user.tag}\`,
                 > **ID :** \`${member.user.id}\`,
                 > **Bot :** ${member.user.bot ? ':white_check_mark:' : '❌'}
 
-                __ ** 👆🏻Information Compte ** __
+                ${infoE}  __ **Information Compte ** __
 
                 > **Créer :** <t:${parseInt(member.user.createdTimestamp / 1000)}:R>
                 > **A rejoin :** <t:${parseInt(member.joinedAt / 1000)}:R>`)
-            await message.editReply({ embeds: [userEmbed] })
-
+                .setFooter({text: "User-Info"})
+          setTimeout(async() => await message.editReply({ embeds: [userEmbed] }), 2000)
+            })
         } catch (err) {
 
             console.log(`Une erreur dans le commande user-info`, err)
 
+            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+                return
+            })
+
+            let channel = await bot.channels.cache.get("1038859689833791528")
+            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
         }
     }
 }

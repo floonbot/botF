@@ -52,7 +52,7 @@ module.exports = {
             })
         } catch (err) {
 
-            console.log(`Une erreur dans la commande blacklistremove.`, err)
+            console.log(`Une erreur dans la commande blacklistremove`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

@@ -29,7 +29,7 @@ module.exports = {
                 .setColor("#FF5D00")
                 .setTitle(`Chargement de la commande bot-info !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${Sos} **__Je cherche les commandes__** ${Sos}
+                .setDescription(`${Sos} **__Je cherche les commandes !!__** ${Sos}
 
             > **Sur le serveur :** ${message.guild.name}
              

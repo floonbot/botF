@@ -82,7 +82,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande ban.`, err)
+            console.log(`Une erreur dans la commande ban`, err)
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {
                 return

@@ -3,10 +3,11 @@ const fs = require("fs");
 const { pingE } = require("../.././json/emoji.json");
 
 
+
 module.exports = {
 
     name: "ping",
-    description: "Donne le ping du bot.",
+    description: "Donne le ping du bot",
     permission: "Aucune",
     dm: false,
     category: "👆🏻Information",
@@ -18,7 +19,7 @@ module.exports = {
 
             let pingEmbed = new Discord.EmbedBuilder()
                 .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande ping`)
+                .setTitle(`Chargement de la commande ping !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
                 .setDescription(`${pingE}**__Je cherche le ping du bot__**${pingE}
 
@@ -32,9 +33,9 @@ module.exports = {
 
                 pingEmbed = new Discord.EmbedBuilder()
                     .setColor("#0070FF")
-                    .setTitle(`${pingE}La lantence du bot${pingE}`)
+                    .setTitle(`La lantence du bot`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setDescription(`Le ping du bot est de : \`${bot.ws.ping}\` ms.`)
+                    .setDescription(`${pingE} Le ping du bot est de : \`${bot.ws.ping}\` ms`)
                     .setTimestamp()
                     .setFooter({ text: "Ping" })
 
@@ -50,7 +51,6 @@ module.exports = {
 
             let channel = await bot.channels.cache.get("1038859689833791528")
             channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
         }
     }
 }

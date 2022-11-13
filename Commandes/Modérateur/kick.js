@@ -72,7 +72,7 @@ module.exports = {
       await member.kick(reason)
 
     } catch (err) {
-      console.log(`Une erreur dans la commande kick.`, err)
+      console.log(`Une erreur dans la commande kick`, err)
 
 
       fs.writeFile("./erreur.txt", `${err.stack} `, () => {

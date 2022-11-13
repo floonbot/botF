@@ -27,7 +27,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande lock.`, err);
+            console.log(`Une erreur dans la commande lock`, err);
 
             fs.writeFile("./erreur.txt", `${err.stack} `, () => {
                 return

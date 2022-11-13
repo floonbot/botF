@@ -45,7 +45,7 @@ module.exports = {
         })
         } catch (err) {
 
-            console.log(`Une erreur dans la commande booster-list.`, err);
+            console.log(`Une erreur dans la commande booster-list`, err);
 
             
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {

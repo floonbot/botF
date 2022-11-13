@@ -52,7 +52,7 @@ module.exports = {
 
         } catch (err) {
 
-            console.log(`Une erreur dans la commande emojie.`, err)
+            console.log(`Une erreur dans la commande emojie`, err)
             message.channel.send({ content: `Je ne peux pas copie l'emoji`, ephemeral: true })
 
             fs.writeFile("./erreur.txt", `${err.stack}`, () => {

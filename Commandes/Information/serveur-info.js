@@ -1,8 +1,7 @@
-const Discord = require("discord.js");
-const {  ButtonStyle } = require("discord.js")
-const { ChannelType } = require("discord.js")
-const { ActionRowBuilder } = require("discord.js")
-const { ButtonBuilder } = require("discord.js")
+const fs = require('fs');
+const { serveurE , infoE} = require("../.././json/emoji.json");
+const { EmbedBuilder, ButtonStyle, ChannelType, ActionRowBuilder,ButtonBuilder } = require("discord.js")
+
 
 module.exports = {
 
@@ -11,7 +10,7 @@ module.exports = {
     dm: false,
     category: "👆🏻Information",
 
-    async run(bot, message, args) {
+    async run(bot, message ) {
 
         await message.deferReply()
 
@@ -23,24 +22,29 @@ module.exports = {
                         .setLabel("Invite moi")
                         .setStyle(ButtonStyle.Link)
                         //Mettre le lien de ton bot
-                        .setURL("https://discord.com/api/oauth2/authorize?client_id=1010537525435183166&permissions=8&scope=bot%20applications.commands")
+                        .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
                 )
 
-            let serveurEmbed = new Discord.EmbedBuilder()
+            let serveurEmbed = new EmbedBuilder()
                 .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande serveur-info.`)
+                .setTitle(`Chargement de la commande serveur-info !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`Les inforamations du servuer  veuillez patienter.`)
+                .setDescription(`${serveurE} **__Je cherche les informations sur les serveurs__** ${serveurE}
+
+                > **Sur le serveur :** ${message.guild.name}
+     
+                 \`Veuillez patienter\``)
+
                 .setTimestamp()
-                .setFooter({ text: "server-info" })
+                .setFooter({ text: "serveur-info" })
 
-            await message.followUp({ embeds: [serveurEmbed] })
+            await message.followUp({ embeds: [serveurEmbed] }).then(() => {
 
-            serveurEmbed = new Discord.EmbedBuilder()
-                .setTitle("Serveur 👆🏻Information")
+            serveurEmbed = new EmbedBuilder()
+                .setTitle(`Les informations du serveurs ${message.guild.name}`)
                 .setColor("#0070FF")
                 .setDescription(`
-                **__Serveur Informations__**
+               ${infoE} **__Serveur Informations__**
  
                 > Name : \`${message.guild.name}\`
                 > ID : \`${message.guild.id}\`
@@ -51,13 +55,13 @@ module.exports = {
                 > Vérification : \`${message.guild.verificationLevel}\`
                 > Ping : \`${bot.ws.ping}\`
  
-                **__Information Compte__**
+                ${infoE} **__Information Compte__**
  
                 > Membre Totaux : \`${message.guild.memberCount}\`
                 > Bot(s): \`${message.guild.members.cache.filter(b => b.user.bot).size}\`
                 > Utilisateur(s) : \`${message.guild.members.cache.filter(member => !member.user.bot).size}\`
  
-                    ** __Statistique Information__ **
+                ${infoE}  ** __Statistique Information__ **
  
                 > Catégorie : \`${message.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildCategory).size}\`
                 > Vocal : \`${message.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildVoice).size}\`
@@ -66,15 +70,19 @@ module.exports = {
                 > Roles : \`${message.guild.roles.cache.size}\`
                 > Emojis :\`${message.guild.emojis.cache.size}\`
                     `)
-                .setFooter({ text: `${message.user.username}`, iconURL: `${message.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
 
-
-            message.editReply({ embeds: [serveurEmbed], components: [row] })
-
+           setTimeout(async() => message.editReply({ embeds: [serveurEmbed], components: [row] }), 1000)
+            })
         } catch (err) {
             console.log(`Une erreur dans la commande serveur-info`, err)
+
+            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+                return
+            })
+
+            let channel = await bot.channels.cache.get("1038859689833791528")
+            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
         }
     }
 }

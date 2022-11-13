@@ -12,3 +12,10 @@ bot-info.js
 bot-list.js
 help.js
 ip.js
+info_machine.js
+role-member-list.js
+serveur-info.js
+serveur-list.js
+suggest.js
+url.js
+user-info.js
