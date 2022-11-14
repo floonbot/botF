@@ -95,7 +95,7 @@ module.exports = {
           return
         })
 
-        let channel = await bot.channels.cache.get("1038859689833791528")
+        let channel = await bot.channels.cache.get("1041816985920610354")
         channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
       }
     })
