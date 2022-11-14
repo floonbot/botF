@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const {  TextInputStyle } = require("discord.js");
+const { TextInputStyle } = require("discord.js");
 
 module.exports = {
 
@@ -102,10 +102,10 @@ module.exports = {
 
       fs.writeFile("./erreur.txt", `${err.stack}`, () => {
         return
-    })
+      })
 
-    let channel = await bot.channels.cache.get("1038859689833791528")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      let channel = await bot.channels.cache.get("1038859689833791528")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

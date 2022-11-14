@@ -16,12 +16,7 @@ module.exports = async (bot, interaction) => {
                 let choices = bot.commands.filter(cmd => cmd.name.includes(entry))
                 await interaction.respond(entry === "" ? bot.commands.map(cmd => ({ name: cmd.name, value: cmd.name })) : choices.map(choice => ({ name: choice.name, value: choice.name })))
             }
-            if (interaction.commandName === "setcaptcha" || interaction.commandName === "setantiraid" || interaction.commandName === "setwelcome" || interaction.commandName === "setsuggest" || interaction.commandName === "setgoodbye" || interaction.commandName === "setlogs") {
-
-                let choices = ["on", "off"]
-                let sortie = choices.filter(c => c.includes(entry))
-                await interaction.respond(entry === "" ? sortie.map(c => ({ name: c, value: c })) : sortie.map(c => ({ name: c, value: c })))
-            }
+           
 
             if (interaction.commandName === "eval") {
 

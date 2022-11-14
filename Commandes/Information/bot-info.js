@@ -6,45 +6,45 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
 
-    name: "bot-info",
-    description: "Les informations sur le bot",
-    dm: false,
-    category: "👆🏻Information",
+  name: "bot-info",
+  description: "Les informations sur le bot",
+  dm: false,
+  category: "👆🏻Information",
 
-    async run(bot, message) {
+  async run(bot, message) {
 
-        await message.deferReply()
+    await message.deferReply()
 
-        try {
+    try {
 
-            const row = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setLabel("Invite moi")
-                        .setStyle(ButtonStyle.Link)
-                        //Mettre le lien de ton bot
-                        .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
-                )
+      const row = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder()
+            .setLabel("Invite moi")
+            .setStyle(ButtonStyle.Link)
+            //Mettre le lien de ton bot
+            .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
+        )
 
-            let botEmbed = new Discord.EmbedBuilder()
-                .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande bot-info !!`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${Floon} **__Je cherche les informations sur ${bot.user.tag}__** ${Floon}
+      let botEmbed = new Discord.EmbedBuilder()
+        .setColor("#FF5D00")
+        .setTitle(`Chargement de la commande bot-info !!`)
+        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+        .setDescription(`${Floon} **__Je cherche les informations sur ${bot.user.tag}__** ${Floon}
 
             > **Sur le serveur :** ${message.guild.name}
              
               \`Veuillez patienter\``)
-                .setTimestamp()
-                .setFooter({ text: "bot-info" })
+        .setTimestamp()
+        .setFooter({ text: "bot-info" })
 
-            await message.followUp({ embeds: [botEmbed] }).then(() => {
+      await message.followUp({ embeds: [botEmbed] }).then(() => {
 
-                botEmbed = new Discord.EmbedBuilder()
-                    .setTitle(`Les informations de ${bot.user.username}`)
-                    .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setColor("#0070FF")
-                    .setDescription(`
+        botEmbed = new Discord.EmbedBuilder()
+          .setTitle(`Les informations de ${bot.user.username}`)
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+          .setColor("#0070FF")
+          .setDescription(`
                 __**${infoE} Informations**__
 
                 > **Développer :** \`Floon\`
@@ -58,19 +58,19 @@ module.exports = {
                 > **Créer :** <t:${parseInt(bot.user.createdTimestamp / 1000)}:R>
                `)
 
-                setTimeout(() => message.editReply({ embeds: [botEmbed], components: [row] }), 1000)
-            })
+        setTimeout(() => message.editReply({ embeds: [botEmbed], components: [row] }), 1000)
+      })
 
-        } catch (err) {
+    } catch (err) {
 
-            console.log(`Une erreur dans le commande bot-info`, err)
+      console.log(`Une erreur dans le commande bot-info`, err)
 
-            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-                return
-            })
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
 
-            let channel = await bot.channels.cache.get("1038859689833791528")
-            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-        }
+      let channel = await bot.channels.cache.get("1038859689833791528")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+  }
 }

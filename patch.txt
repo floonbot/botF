@@ -32,3 +32,6 @@ say.js
 ticket.js
 ban.js
 unmute.js
+unwarn.js
+warnlist.js
+setcommandes.js

@@ -63,12 +63,10 @@ module.exports = async (bot, message) => {
         }
     })
 
-    db.query(`SELECT * FROM xp WHERE guildId = '${message.guildId}' AND userId = '${message.author.id}'`, async (err, req) => {
-
-        try {
+      db.query(`SELECT * FROM xp WHERE guildId = '${message.guildId}' AND userId = '${message.author.id}'`, async (err, req) => {
             if (req.length < 1) {
 
-                db.query(`INSERT INTO xp (guild, guildId, user, userId,  xp, level) VALUES ('${message.guild.name}','${message.guildId}', '${message.author.tag}','${message.author.id}', '0', '0')`)
+              db.query(`INSERT INTO xp (guild, guildId, userId,  xp, level) VALUES ('${message.guild.name}','${message.guildId}' ,'${message.author.id}', '0', '0')`)
             } else {
 
                 let level = parseInt(req[0].level)
@@ -98,13 +96,8 @@ module.exports = async (bot, message) => {
                     console.log(`${message.author.tag} a gagner ${xptogive} sur le serveur ${message.guild.name}`)
                 }
             }
-        } catch (err) {
-
-            console.log("Une erreur dans l'event messageCreate pour la création du système d'xp.", err)
-
-        }
     })
-
+    
     //Antilien
     try {
         if (message.content.includes("https://") || message.content.includes("discord.gg") || message.content.includes("http://")) {

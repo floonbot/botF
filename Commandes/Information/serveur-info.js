@@ -1,49 +1,49 @@
 const fs = require('fs');
-const { serveurE , infoE} = require("../.././json/emoji.json");
-const { EmbedBuilder, ButtonStyle, ChannelType, ActionRowBuilder,ButtonBuilder } = require("discord.js")
+const { serveurE, infoE } = require("../.././json/emoji.json");
+const { EmbedBuilder, ButtonStyle, ChannelType, ActionRowBuilder, ButtonBuilder } = require("discord.js")
 
 
 module.exports = {
 
-    name: "serveur-info",
-    description: "Permet de voir les Information du serveur",
-    dm: false,
-    category: "👆🏻Information",
+  name: "serveur-info",
+  description: "Permet de voir les Information du serveur",
+  dm: false,
+  category: "👆🏻Information",
 
-    async run(bot, message ) {
+  async run(bot, message) {
 
-        await message.deferReply()
+    await message.deferReply()
 
-        try {
+    try {
 
-            const row = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setLabel("Invite moi")
-                        .setStyle(ButtonStyle.Link)
-                        //Mettre le lien de ton bot
-                        .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
-                )
+      const row = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder()
+            .setLabel("Invite moi")
+            .setStyle(ButtonStyle.Link)
+            //Mettre le lien de ton bot
+            .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
+        )
 
-            let serveurEmbed = new EmbedBuilder()
-                .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande serveur-info !!`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${serveurE} **__Je cherche les informations sur les serveurs__** ${serveurE}
+      let serveurEmbed = new EmbedBuilder()
+        .setColor("#FF5D00")
+        .setTitle(`Chargement de la commande serveur-info !!`)
+        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+        .setDescription(`${serveurE} **__Je cherche les informations sur les serveurs__** ${serveurE}
 
                 > **Sur le serveur :** ${message.guild.name}
      
                  \`Veuillez patienter\``)
 
-                .setTimestamp()
-                .setFooter({ text: "serveur-info" })
+        .setTimestamp()
+        .setFooter({ text: "serveur-info" })
 
-            await message.followUp({ embeds: [serveurEmbed] }).then(() => {
+      await message.followUp({ embeds: [serveurEmbed] }).then(() => {
 
-            serveurEmbed = new EmbedBuilder()
-                .setTitle(`Les informations du serveurs ${message.guild.name}`)
-                .setColor("#0070FF")
-                .setDescription(`
+        serveurEmbed = new EmbedBuilder()
+          .setTitle(`Les informations du serveurs ${message.guild.name}`)
+          .setColor("#0070FF")
+          .setDescription(`
                ${infoE} **__Serveur Informations__**
  
                 > Name : \`${message.guild.name}\`
@@ -70,19 +70,19 @@ module.exports = {
                 > Roles : \`${message.guild.roles.cache.size}\`
                 > Emojis :\`${message.guild.emojis.cache.size}\`
                     `)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
 
-           setTimeout(async() => message.editReply({ embeds: [serveurEmbed], components: [row] }), 1000)
-            })
-        } catch (err) {
-            console.log(`Une erreur dans la commande serveur-info`, err)
+        setTimeout(async () => message.editReply({ embeds: [serveurEmbed], components: [row] }), 1000)
+      })
+    } catch (err) {
+      console.log(`Une erreur dans la commande serveur-info`, err)
 
-            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-                return
-            })
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
 
-            let channel = await bot.channels.cache.get("1038859689833791528")
-            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-        }
+      let channel = await bot.channels.cache.get("1038859689833791528")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+  }
 }

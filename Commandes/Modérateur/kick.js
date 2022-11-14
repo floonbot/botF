@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const {kickE, serveurE, userE, modoE, textE} = require("../.././json/emoji.json");
+const { kickE, serveurE, userE, modoE, textE } = require("../.././json/emoji.json");
 
 module.exports = {
 
@@ -60,33 +60,33 @@ module.exports = {
       await message.deferReply()
 
       let Embed = new Discord.EmbedBuilder()
-                .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande kick !!`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${kickE}**__Je suis entrain de kick le membre__**${kickE}
+        .setColor("#FF5D00")
+        .setTitle(`Chargement de la commande kick !!`)
+        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+        .setDescription(`${kickE}**__Je suis entrain de kick le membre__**${kickE}
 
                 > **Sur le serveur :** ${message.guild.name}, 
                 
                 \`veuillez patienter\`.`)
-                .setTimestamp()
-                .setFooter({ text: "kick" })
+        .setTimestamp()
+        .setFooter({ text: "kick" })
 
-            await message.followUp({ embeds: [Embed] }).then(() => {
+      await message.followUp({ embeds: [Embed] }).then(() => {
 
-      let kickEmbed = new Discord.EmbedBuilder()
-        .setColor("#FF0000")
-        .setTitle(`Le membre a étais kick`)
-        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-        .setDescription(`${kickE} **__kick__**
+        let kickEmbed = new Discord.EmbedBuilder()
+          .setColor("#FF0000")
+          .setTitle(`Le membre a étais kick`)
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+          .setDescription(`${kickE} **__kick__**
         
         > ${modoE} **Modérateur :** \`${message.user.tag}\`
         > ${userE} **Membre qui est kick :** \`${user.tag}\`
         > ${textE} **Raison :** \`${reason}\`!`)
-        .setTimestamp()
-        .setFooter({ text: "kick" })
+          .setTimestamp()
+          .setFooter({ text: "kick" })
 
-   setTimeout(async( ) =>    await message.editReply({ embeds: [kickEmbed] }), 2000)
-            })
+        setTimeout(async () => await message.editReply({ embeds: [kickEmbed] }), 2000)
+      })
       await member.kick(reason)
 
     } catch (err) {

@@ -1,62 +1,62 @@
 const fs = require("fs");
-const { Emojibot} = require("../.././json/emoji.json");
+const { Emojibot } = require("../.././json/emoji.json");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 
-    name: "bot-list",
-    description: "Permet de regarder le nombre de bot",
-    permission: "Aucune",
-    dm: false,
-    category: "👆🏻Information",
+  name: "bot-list",
+  description: "Permet de regarder le nombre de bot",
+  permission: "Aucune",
+  dm: false,
+  category: "👆🏻Information",
 
-    async run(bot, message) {
+  async run(bot, message) {
 
-        try {
+    try {
 
-            await message.deferReply()
+      await message.deferReply()
 
-            const list = message.guild.members.cache.filter(m => m.user.bot).map(m => `> \`${m.user.tag}\``).join(`\n`)
+      const list = message.guild.members.cache.filter(m => m.user.bot).map(m => `> \`${m.user.tag}\``).join(`\n`)
 
-            let botEmbed = new EmbedBuilder()
-                .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande bot-list !!`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${Emojibot} **__Je cherche les bots sur le serveur ${message.guild.name}__** ${Emojibot}
+      let botEmbed = new EmbedBuilder()
+        .setColor("#FF5D00")
+        .setTitle(`Chargement de la commande bot-list !!`)
+        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+        .setDescription(`${Emojibot} **__Je cherche les bots sur le serveur ${message.guild.name}__** ${Emojibot}
 
         > **Sur le serveur :** ${message.guild.name}
          
           \`Veuillez patienter\``)
-                .setTimestamp()
-                .setFooter({ text: "bot-list" })
+        .setTimestamp()
+        .setFooter({ text: "bot-list" })
 
-            await message.followUp({ embeds: [botEmbed] }).then(() => {
+      await message.followUp({ embeds: [botEmbed] }).then(() => {
 
-                let botEmbed = new EmbedBuilder()
-                    .setTitle(`Liste des bot sur le serveur`)
-                    .setColor("#0070FF")
-                    .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setDescription(`${Emojibot} **__Les pseudo des bots :__**
+        let botEmbed = new EmbedBuilder()
+          .setTitle(`Liste des bot sur le serveur`)
+          .setColor("#0070FF")
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+          .setDescription(`${Emojibot} **__Les pseudo des bots :__**
                 
                  ${list}`)
-                    .setFooter({ text: "Bot list" })
-                    .setTimestamp()
+          .setFooter({ text: "Bot list" })
+          .setTimestamp()
 
-                setTimeout(() => message.editReply({ embeds: [botEmbed] }), 2000)
-            })
+        setTimeout(() => message.editReply({ embeds: [botEmbed] }), 2000)
+      })
 
-        } catch (err) {
+    } catch (err) {
 
-            console.log(`Une erreur dans la commande bot-list`, err);
+      console.log(`Une erreur dans la commande bot-list`, err);
 
-            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-                return
-            })
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
 
-            let channel = await bot.channels.cache.get("1038859689833791528")
-            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
-        }
+      let channel = await bot.channels.cache.get("1038859689833791528")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
 
     }
+
+  }
 }

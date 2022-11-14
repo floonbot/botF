@@ -1,48 +1,48 @@
 const fs = require("fs");
-const {userE, infoE} = require("../.././json/emoji.json")
+const { userE, infoE } = require("../.././json/emoji.json")
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 
-    name: "user-info",
-    description: "Permet de voir les informations d'un membre",
-    dm: false,
-    category: "👆🏻Information",
-    options: [
-        {
-            type: "user",
-            name: "membre",
-            description: "Quel membre ?",
-            required: true
-        },
-    ],
+  name: "user-info",
+  description: "Permet de voir les informations d'un membre",
+  dm: false,
+  category: "👆🏻Information",
+  options: [
+    {
+      type: "user",
+      name: "membre",
+      description: "Quel membre ?",
+      required: true
+    },
+  ],
 
-    async run(bot, message) {
+  async run(bot, message) {
 
-        await message.deferReply()
+    await message.deferReply()
 
-        try {
+    try {
 
-            const member = message.options.getMember("membre");
+      const member = message.options.getMember("membre");
 
-            let userEmbed = new EmbedBuilder()
-                .setColor("#FF5D00")
-                .setTitle(`Chargement de la commande user-info !!`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`${userE} **__Je cherche les informations du membre__** ${userE}
+      let userEmbed = new EmbedBuilder()
+        .setColor("#FF5D00")
+        .setTitle(`Chargement de la commande user-info !!`)
+        .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+        .setDescription(`${userE} **__Je cherche les informations du membre__** ${userE}
 
                 > **Sur le serveur :** ${message.guild.name}
      
                  \`Veuillez patienter\``)
-                .setFooter({ text: "User-info" })
+        .setFooter({ text: "User-info" })
 
-            await message.followUp({ embeds: [userEmbed] }).then(() => {
+      await message.followUp({ embeds: [userEmbed] }).then(() => {
 
-            userEmbed = new EmbedBuilder()
-                .setTitle(`Info de ${member.user.tag}`)
-                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setColor("#0070FF")
-                .setDescription(`
+        userEmbed = new EmbedBuilder()
+          .setTitle(`Info de ${member.user.tag}`)
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+          .setColor("#0070FF")
+          .setDescription(`
                ${infoE} __**Informations**__
 
                 > **Name/Tag :** \`${member.user.tag}\`,
@@ -53,19 +53,19 @@ module.exports = {
 
                 > **Créer :** <t:${parseInt(member.user.createdTimestamp / 1000)}:R>
                 > **A rejoin :** <t:${parseInt(member.joinedAt / 1000)}:R>`)
-                .setFooter({text: "User-Info"})
-          setTimeout(async() => await message.editReply({ embeds: [userEmbed] }), 2000)
-            })
-        } catch (err) {
+          .setFooter({ text: "User-Info" })
+        setTimeout(async () => await message.editReply({ embeds: [userEmbed] }), 2000)
+      })
+    } catch (err) {
 
-            console.log(`Une erreur dans le commande user-info`, err)
+      console.log(`Une erreur dans le commande user-info`, err)
 
-            fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-                return
-            })
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
 
-            let channel = await bot.channels.cache.get("1038859689833791528")
-            channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-        }
+      let channel = await bot.channels.cache.get("1038859689833791528")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+  }
 }
