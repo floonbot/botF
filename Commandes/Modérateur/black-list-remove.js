@@ -1,10 +1,12 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const {stopE, modoE, serveurE, userE} = require("../.././json/emoji.json");
+
 
 module.exports = {
 
-    name: "black_list_remove",
-    description: "Supprime un joueur de la blacklist.",
+    name: "black-list-remove",
+    description: "Supprime un joueur de la blacklist",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -12,7 +14,7 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "Membre à unblacklister.",
+            description: "Quel est le membre a unblack list",
             required: true
         },
     ],
@@ -33,20 +35,36 @@ module.exports = {
 
                 db.query(`DELETE FROM blacklists WHERE guildId = '${message.guildId}' AND user = '${user.id}'`)
 
+                await message.deferReply()
+
+                let pingEmbed = new Discord.EmbedBuilder()
+                .setColor("#FF5D00")
+                .setTitle(`Chargement de la commande black_list_remove !!`)
+                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+                .setDescription(`${stopE} **__Je cherche le membre a black list__** ${stopE}
+    
+                > **Sur le serveur :** ${message.guild.name}, 
+                
+                \`veuillez patienter\`.`)
+                .setTimestamp()
+                .setFooter({ text: "un black-list" })
+    
+            await message.followUp({ embeds: [pingEmbed] }).then(() => {
+
                 let Embed = new Discord.EmbedBuilder()
                     .setColor("#FF0000")
-                    .setTitle(`Le membre ${user.tag} est bien supprimé de la black list`)
+                    .setTitle(`Le membre est bien supprimé de la black list`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setDescription(`🛑 **__Black list__** 
+                    .setDescription(`${stopE} **__Black list__** 
              
-            > **Serveur :**  \`${message.guild.name}\`
-            > **Modérateur :** \`${message.user.tag}\`
-            > **Membre qui est supprimé de la black list :** \`${user.tag}\``)
+            > ${serveurE} **Serveur :**  \`${message.guild.name}\`
+            > ${modoE} **Modérateur :** \`${message.user.tag}\`
+            > ${userE} **Membre qui est supprimé de la black list :** \`${user.tag}\``)
                     .setTimestamp()
-                    .setFooter({ text: "Black list" })
+                    .setFooter({ text: "Unblack list" })
 
-                await message.reply({ embeds: [Embed] })
-
+             setTimeout(async() =>   await message.editReply({ embeds: [Embed] }), 2000)
+            })
                 const removeRole = member.guild.roles.cache.find(r => r.name === "Black list")
                 member.roles.remove(removeRole)
             })

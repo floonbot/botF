@@ -19,3 +19,16 @@ serveur-list.js
 suggest.js
 url.js
 user-info.js
+black-list.js (tout)
+clear.js
+embed-builder.js
+add-emoji.js
+history.js
+kick.js
+mute.js
+nuke.js
+règlement.js
+say.js
+ticket.js
+ban.js
+unmute.js

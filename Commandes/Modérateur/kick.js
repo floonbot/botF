@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const {kickE, serveurE, userE, modoE, textE} = require("../.././json/emoji.json");
 
 module.exports = {
 
@@ -12,13 +13,13 @@ module.exports = {
     {
       type: "user",
       name: "membre",
-      description: "Le membre à kick",
+      description: "Quel est le membre ?",
       required: true,
       autocomplete: false
     }, {
       type: "string",
       name: "raison",
-      description: "La raison du kick",
+      description: "Quel est la raison ?",
       required: true,
       autocomplete: false
     }
@@ -33,7 +34,7 @@ module.exports = {
     let reason = args.get("raison").value;
     if (!reason) reason = "Pas de raison fournie pour kick le membre !!";
 
-    if (message.user.id === user.id) return message.reply({ content: "Essaie pas de te kick.!!", ephemeral: true })
+    if (message.user.id === user.id) return message.reply({ content: "Essaie pas de te kick !!", ephemeral: true })
     if ((await message.guild.fetchOwner()).id === user.id) return message.reply({ content: "Ne kick pas le propriétaire du serveur !!", ephemeral: true })
     if (member && !member.kickable) return message.reply({ content: "Je ne peux pas kick ce membre !!", ephemeral: true })
     if (member && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply({ content: "Tu ne peux pas kick cette personne !!", ephemeral: true })
@@ -43,11 +44,11 @@ module.exports = {
         .setColor("#FF0000")
         .setTitle(`Kick par ${message.user.tag}`)
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-        .setDescription(`🛑**__Kick__**
+        .setDescription(`${kickE} **__Kick__**
         
-         > **Serveur :** \`${message.guild.name}\`
-         > **Modérateur :** \`${message.user.tag}\`
-         > **Raison :** \`${reason}\`!`)
+         > ${serveurE} **Serveur :** \`${message.guild.name}\`
+         > ${modoE} **Modérateur :** \`${message.user.tag}\`
+         > ${textE} **Raison :** \`${reason}\`!`)
         .setTimestamp()
         .setFooter({ text: "Kick" })
       await user.send({ embeds: [kickEmbed] })
@@ -56,24 +57,40 @@ module.exports = {
 
     try {
 
+      await message.deferReply()
+
+      let Embed = new Discord.EmbedBuilder()
+                .setColor("#FF5D00")
+                .setTitle(`Chargement de la commande kick !!`)
+                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+                .setDescription(`${kickE}**__Je suis entrain de kick le membre__**${kickE}
+
+                > **Sur le serveur :** ${message.guild.name}, 
+                
+                \`veuillez patienter\`.`)
+                .setTimestamp()
+                .setFooter({ text: "kick" })
+
+            await message.followUp({ embeds: [Embed] }).then(() => {
+
       let kickEmbed = new Discord.EmbedBuilder()
         .setColor("#FF0000")
-        .setTitle(`Le membre ${user.tag} a étais kick`)
+        .setTitle(`Le membre a étais kick`)
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-        .setDescription(`🛑**__kick__**
+        .setDescription(`${kickE} **__kick__**
         
-        > **Modérateur :** \`${message.user.tag}\`
-        > **Membre qui est kick :** \`${user.tag}\`
-        > **Raison :** \`${reason}\`!`)
+        > ${modoE} **Modérateur :** \`${message.user.tag}\`
+        > ${userE} **Membre qui est kick :** \`${user.tag}\`
+        > ${textE} **Raison :** \`${reason}\`!`)
         .setTimestamp()
         .setFooter({ text: "kick" })
 
-      await message.reply({ embeds: [kickEmbed] })
+   setTimeout(async( ) =>    await message.editReply({ embeds: [kickEmbed] }), 2000)
+            })
       await member.kick(reason)
 
     } catch (err) {
       console.log(`Une erreur dans la commande kick`, err)
-
 
       fs.writeFile("./erreur.txt", `${err.stack} `, () => {
         return

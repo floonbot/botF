@@ -1,5 +1,6 @@
-const Discord = require("discord.js")
-const { EmbedBuilder, TextInputBuilder, ModalBuilder, ActionRowBuilder, TextInputStyle } = require("discord.js")
+const Discord = require("discord.js");
+const fs = require("fs");
+const {  TextInputStyle } = require("discord.js");
 
 module.exports = {
 
@@ -99,6 +100,12 @@ module.exports = {
 
       console.log(`Une erreur dans la commande embed-builder`, err)
 
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+    })
+
+    let channel = await bot.channels.cache.get("1038859689833791528")
+    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

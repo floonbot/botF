@@ -1,9 +1,10 @@
 const Discord = require('discord.js')
 const fs = require("fs");
+const {stopE, modoE, textE, gaming, userE} = require("../.././json/emoji.json");
 
 module.exports = {
 
-    name: "black_list_add",
+    name: "black-list-add",
     description: "Ajoute un joueur à la blacklist",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
@@ -12,32 +13,32 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "membre à blacklister.",
+            description: "Quel est le membre ?",
             required: true
         },
         {
             type: "string",
             name: "id",
-            description: "id discord du membre à blacklister.",
+            description: "Quel est l'id du membre ?",
             required: true,
             autocomplete: false
         },
         {
             type: "string",
             name: "pseudo",
-            description: "pseudo dans le jeu où le membre vas être blacklist.",
+            description: "Quel est le pseudo du membre, dans le jeux ?",
             required: false,
             autocomplete: false
         }, {
             type: "string",
             name: "raison",
-            description: "la raison du blacklist.",
+            description: "Quel est la raison ?",
             required: false,
             autocomplete: false
         }, {
             type: "string",
             name: "jeux",
-            description: "Le jeu sur le quel le membre est blacklist.",
+            description: "Quel est le jeux ?",
             required: false,
             autocomplete: false
         }
@@ -55,7 +56,7 @@ module.exports = {
             let pseudo = args.getString("pseudo")
             if (!pseudo) pseudo = "Pas de pseudo"
 
-            let jeux = args.getString("jeu")
+            let jeux = args.getString("jeux")
             if (!jeux) jeux = "Pas de jeux"
 
             let reason = args.getString("raison")
@@ -66,24 +67,42 @@ module.exports = {
             if (message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply({ content: "Tu ne peux pas blacklister cette personne !!", ephemeral: true })
             if ((await message.guild.members.fetchMe()).roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply("Le bot ne peut pas blacklister cette personne !!")
 
+            await message.deferReply()
+
+            let pingEmbed = new Discord.EmbedBuilder()
+            .setColor("#FF5D00")
+            .setTitle(`Chargement de la commande black_list_add !!`)
+            .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+            .setDescription(`${stopE} **__Je cherche le membre a black list__** ${stopE}
+
+            > **Sur le serveur :** ${message.guild.name}, 
+            
+            \`veuillez patienter\`.`)
+            .setTimestamp()
+            .setFooter({ text: "Black-list" })
+
+        await message.followUp({ embeds: [pingEmbed] }).then(() => {
+
             let Embed = new Discord.EmbedBuilder()
                 .setColor("#FF0000")
-                .setTitle(`Le membre ${user.tag} est bien dans la black list`)
+                .setTitle(`Le membre est bien dans la black list`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`🛑 **__Black list__** 
+                .setDescription(`${stopE} **__Black list__** 
             
-            > **Modérateur :** \`${message.user.tag}\`
-            > **Membre qui est black list :** \`${user.tag}\`
-            > **Raison :** \`${reason}\``)
+            > ${modoE} **Modérateur :** \`${message.user.tag}\`
+            > ${userE} **Membre qui est black list :** \`${user.tag}\`
+            > ${textE} **Raison :** \`${reason}\`
+            > ${gaming} **Jeux :** \`${jeux}\`
+            > ${userE} **Pseudo :** \`${pseudo}\``)
                 .setTimestamp()
                 .setFooter({ text: "Black list" })
 
-            await message.reply({ embeds: [Embed] })
-
+         setTimeout(async() => await message.editReply({ embeds: [Embed] }), 2000)
+        })
             const addRole = member.guild.roles.cache.find(r => r.name === "Black list")
             if (!addRole) {
                 const addRole = await member.guild.roles.create({
-                    name: 'Black list', color: "DarkGold"
+                    name: 'Black list', color: "Black"
                 });
                 await member.roles.add(addRole);
             } else {

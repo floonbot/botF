@@ -1,5 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const Discord = require("discord.js")
+const { ButtonBuilder, ButtonStyle } = require('discord.js');
+const Discord = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
     name: "ticket",
@@ -12,7 +13,7 @@ module.exports = {
 
         try {
             const Ticketembed = new Discord.EmbedBuilder()
-                .setTitle(`Ticket sur le serveur :${message.guild.name}`)
+                .setTitle(`Ticket`)
                 .setDescription(`Merci de respecter les regles concernant les tickets !\n1-Ne pas creer de ticket sans raison\n\n2-ne pas mentionner le staff sauf si vous n'avez pas eu de reponse pendant 24h\n\n3-Ne pas creer de ticket troll ou pour insulter le staff ou une autre personne\nCordialment l'equipe ${message.guild.name}`)
                 .setThumbnail(message.guild.iconURL())
                 .setFooter({ text: `Cordialment l'equipe ${message.guild.name}`, iconURL: message.guild.iconURL() })
@@ -32,6 +33,12 @@ module.exports = {
 
             console.log("Une erreur dans la commande ticket", err)
 
+            fs.writeFile("./erreur.txt", `${err.stack} `, () => {
+                return
+              })
+        
+              let channel = await bot.channels.cache.get("1038859689833791528")
+              channel.send({ content: `⚠️ Une erreur est apparue! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
         }
     }
 }

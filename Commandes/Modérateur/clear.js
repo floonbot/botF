@@ -4,7 +4,7 @@ const fs = require("fs");
 module.exports = {
 
     name: "clear",
-    description: "Efface beaucoup de messages.",
+    description: "Efface beaucoup de messages",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -12,13 +12,13 @@ module.exports = {
         {
             type: "number",
             name: "nombre",
-            description: "Le nombre de messages à supprimer.",
+            description: "Quel est le nombre ?",
             required: true,
             autocomplete: false
         }, {
             type: "channel",
             name: "salon",
-            description: "Le salon où effacer les messages.",
+            description: "Quel est le salon ?",
             required: false,
             autocomplete: false
         }
@@ -41,7 +41,7 @@ module.exports = {
             } catch (err) {
 
                 let messages = [...(await channel.messages.fetch()).values()].filter(async m => (Date.now() - m.createdAt) <= 1209600000)
-                if (!messages.length <= 0) return message.reply({ content: "Aucun message à supprimer car ils datent tous de plus de 14 jours !!", ephemeral: true })
+                if (!messages.length <= 0) message.reply({ content: "Aucun message à supprimer car ils datent tous de plus de 14 jours !!", ephemeral: true })
                 await channel.bulkDelete(messages)
                 await message.reply({ content: `J'ai pu supprimé uniquement \`${messages.size}\` message(s) dans le salon ${channel} car les autres dataient de plus 14 jours !!`, ephemeral: true })
 

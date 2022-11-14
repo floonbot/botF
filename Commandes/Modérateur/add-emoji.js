@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
 const axios = require('axios');
-const fs = require("fs")
+const fs = require("fs");
 
 
 module.exports = {
 
-    name: "emojis_add",
-    description: "Permet d'ajouter un émoji sur le serveur.",
+    name: "add-emoji",
+    description: "Permet d'ajouter un émoji sur le serveur",
     permission: Discord.PermissionFlagsBits.ManageChannels,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -25,7 +25,7 @@ module.exports = {
             autocomplete: false
         }
     ],
-    async run(bot, message, args, db) {
+    async run(bot, message) {
 
         try {
 
@@ -60,7 +60,6 @@ module.exports = {
             })
 
             let channel = await bot.channels.cache.get("1038859689833791528")
-
             channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
         }
     }

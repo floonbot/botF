@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const {banE, serveurE, modoE, textE } = require("../.././json/emoji.json");
 
 module.exports = {
 
     name: "ban",
-    description: "Pour Ban le membre qui à fait l'infractions.",
+    description: "Pour Ban le membre qui à fait l'infractions",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -12,13 +13,13 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "Le membre à bannir.",
+            description: "Quel est le membre ?",
             required: true,
             autocomplete: false
         }, {
             type: "string",
             name: "raison",
-            description: "La raison du bannissement.",
+            description: "Quel est la raison ?",
             required: true,
             autocomplete: false
         }
@@ -45,11 +46,11 @@ module.exports = {
                     .setColor("#FF0000")
                     .setTitle(`Ban par ${message.user.tag}.`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setDescription(`🛑 **__Ban__**
+                    .setDescription(`${banE} **__Ban__**
                     
-                    > **Serveur :** \`${message.guild.name}\`,
-                    > **Modérateur :** \`${message.user.tag} \`,
-                    > **Raison :** \`${reason}\`!`)
+                    > ${serveurE} **Serveur :** \`${message.guild.name}\`,
+                    > ${modoE} **Modérateur :** \`${message.user.tag} \`,
+                    > ${textE} **Raison :** \`${reason}\`!`)
                     .setTimestamp()
                     .setFooter({ text: "Ban" })
 
@@ -61,21 +62,38 @@ module.exports = {
 
             }
 
+            await message.deferReply()
+
             let Embed = new Discord.EmbedBuilder()
-                .setColor("#FF0000")
-                .setTitle(`Le membre ${user.tag} a étais ban`)
+                .setColor("#FF5D00")
+                .setTitle(`Chargement de la commande ban !!`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`🛑 **__Ban__** 
+                .setDescription(`${banE}**__Je suis entrain de ban le membre__**${banE}
+
+                > **Sur le serveur :** ${message.guild.name}, 
                 
-                > **Modérateur :** \`${message.user.tag}\`
-                > **Membre qui est ban :** \`${user.tag}\`
-                > **Raison :** \`${reason}\``)
+                \`veuillez patienter\`.`)
                 .setTimestamp()
                 .setFooter({ text: "Ban" })
 
-            await message.reply({ embeds: [Embed] })
-            await message.guild.bans.create(user.id, { reason: reason })
+            await message.followUp({ embeds: [Embed] }).then(() => {
 
+            let Embed = new Discord.EmbedBuilder()
+                .setColor("#FF0000")
+                .setTitle(`Le membre a étais ban`)
+                .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+                .setDescription(`${banE} **__Ban__** 
+                
+                > ${modoE} **Modérateur :** \`${message.user.tag}\`
+                > ${banE} **Membre qui est ban :** \`${user.tag}\`
+                > ${textE} **Raison :** \`${reason}\``)
+                .setTimestamp()
+                .setFooter({ text: "Ban" })
+
+          setTimeout(async() =>  await message.editReply({ embeds: [Embed] }), 2000)
+        })
+            await message.guild.bans.create(user.id, { reason: reason })
+            
             let ID = await bot.fonction.createId("BAN")
 
             db.query(`INSERT INTO bans (guild, guildId, user, userId, author, authorId, ban, reason, date) VALUES ('${message.guild.name}', '${message.guild.id}','${user.tag}', '${user.id}','${message.user.tag}','${message.user.id}', '${ID}', '${reason.replace(/'/g, "\\'")}', '${Date.now()}')`)

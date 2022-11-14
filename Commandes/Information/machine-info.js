@@ -13,7 +13,7 @@ module.exports = {
     name: "machine-info",
     description: "Donne des information sur la machine",
     permission: "Aucune",
-    dm: true,
+    dm: false,
     category: "👆🏻Information",
 
     async run(bot, message) {

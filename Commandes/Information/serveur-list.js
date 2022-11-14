@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder  } = require("discord.js");
-const { numStr } = require('../../Loaders/fonction');
+const { numStr } = require('../../Fonctions/fonction');
 const { serveurE } = require("../.././json/emoji.json");
 
 module.exports = {
@@ -24,7 +24,8 @@ module.exports = {
                 .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
         )
 
-   try{     let n = 0
+   try{   
+      let n = 0
         const guild = bot.guilds.cache.sort((a, b) => b.memberCount - a.memberCount).map((guild) => `**${n += 1}) __${guild.name}__ :**\n\`\`\`${numStr(guild.memberCount)} Membres\n\`\`\``).slice(0, 5).join("\n");
 
         let botEmbed = new EmbedBuilder()

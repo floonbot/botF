@@ -1,10 +1,10 @@
-const Discord = require("discord.js")
-const fs = require("fs")
+const Discord = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
 
     name: "nuke",
-    description: "Recréer un salon.",
+    description: "Recréer un salon",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",

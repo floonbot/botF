@@ -1,11 +1,12 @@
 const Discord = require("discord.js")
 const fs = require("fs");
-const ms = require("ms")
+const ms = require("ms");
+const {muteE, serveurE, userE, modoE, textE, TimeE} = require("../.././json/emoji.json");
 
 module.exports = {
 
     name: "mute",
-    description: "Permet de mute un membre sur le serveur.",
+    description: "Permet de mute un membre sur le serveur",
     permission: Discord.PermissionFlagsBits.ModerateMembers,
     dm: false,
     category: "🧑🏻‍⚖️Modération",
@@ -13,20 +14,20 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "Quel est le membre à mute ?",
+            description: "Quel est le membre ?",
             required: true,
             autocomplete: false
 
         }, {
             type: "string",
             name: "temps",
-            description: "Quel est le temps du mute ?",
+            description: "Quel est le temps ?",
             required: true,
             autocomplete: false
         }, {
             type: "string",
             name: "raison",
-            description: "Quel est la raison du mute ?",
+            description: "Quel est la raison ?",
             required: true,
             autocomplete: false
         }
@@ -59,31 +60,48 @@ module.exports = {
                     .setColor("#FF0000")
                     .setTitle(`Mute par ${message.user.tag}`)
                     .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                    .setDescription(`🛑 **__Mute__** 
+                    .setDescription(`${muteE} **__Mute__** 
                 
-                > **Serveur :**\`${message.guild.name}\`
-                > **Time :**\`${time}\`
-                > **Modérateur :**\`${message.user.tag}\`
-                > **Raison :** \`${reason}\`!`)
+                > ${serveurE} **Serveur :**\`${message.guild.name}\`
+                > ${TimeE} **Time :**\`${time}\`
+                > ${modoE} **Modérateur :**\`${message.user.tag}\`
+                > ${textE} **Raison :** \`${reason}\`!`)
                     .setTimestamp()
                     .setFooter({ text: "Mute" })
                 await user.send({ embeds: [muteEmbed] })
             } catch (err) { }
 
+            await message.deferReply()
+
+            let Embed = new Discord.EmbedBuilder()
+            .setColor("#FF5D00")
+            .setTitle(`Chargement de la commande mute !!`)
+            .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
+            .setDescription(`${muteE}**__Je suis entrain de kick le membre__**${muteE}
+
+            > **Sur le serveur :** ${message.guild.name}, 
+            
+            \`veuillez patienter\`.`)
+            .setTimestamp()
+            .setFooter({ text: "mute" })
+
+        await message.followUp({ embeds: [Embed] }).then(() => {
+
             let muteEmbed = new Discord.EmbedBuilder()
                 .setColor("#FF0000")
-                .setTitle(`Le membre ${user.tag} a étais mute`)
+                .setTitle(`Le membre a étais mute`)
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-                .setDescription(`🛑 **__Mute__** 
+                .setDescription(`${muteE} **__Mute__** 
 
-            > **Modérateur :** \`${message.user.tag}\`
-            > **Membre qui est kick :** \`${user.tag}\`
-            > **Time :**\`${time}\`
-            > **Raison :** \`${reason}\`!`)
+            > ${modoE} **Modérateur :** \`${message.user.tag}\`
+            > ${userE} **Membre qui est kick :** \`${user.tag}\`
+            > ${TimeE} **Time :**\`${time}\`
+            > ${textE} **Raison :** \`${reason}\`!`)
                 .setTimestamp()
                 .setFooter({ text: "Mute" })
 
-            await message.reply({ embeds: [muteEmbed] })
+          setTimeout(async() =>  await message.editReply({ embeds: [muteEmbed] }), 2000)
+        })
             await member.timeout(ms(time), reason)
 
             let ID = await bot.fonction.createId("MUTE")

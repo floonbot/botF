@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const fs = require("fs");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
 
@@ -13,7 +13,7 @@ module.exports = {
         {
             type: "user",
             name: "membre",
-            description: "Voir les infractions d'un membre",
+            description: "Quel est le membre",
             required: false,
             autocomplete: false
         }
