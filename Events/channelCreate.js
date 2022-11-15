@@ -25,8 +25,10 @@ module.exports = async (bot, channels) => {
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`
 
+                > **Auteur :** ${LatestChannel.executor.tag}
                 > **Salon :** ${channels.name}
-                > **Auteur :** ${LatestChannel.executor.tag}`)
+                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}: F>\n`)
+
         .setFooter({ text: "channelCreate" })
         .setTimestamp()
 

@@ -1,42 +1,53 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 
 module.exports = async (bot, message) => {
 
-    let db = bot.db;
+  let db = bot.db;
 
-    db.query(`SELECT logs FROM server WHERE guild = '${message.guildId}'`, async (err, req) => {
+  db.query(`SELECT logs FROM server WHERE guild = '${message.guildId}'`, async (err, req) => {
 
-        try {
+    try {
 
-            if (message.author.bot) return;
-            if (req[0].logs === "false") return;
-            else {
+      if (message.author.bot) return;
+      if (req[0].logs === "false") return;
+      else {
 
-                let channel = message.guild.channels.cache.get(req[0].logs);
-                if (!channel) return;
+        let channel = message.guild.channels.cache.get(req[0].logs);
+        if (!channel) return;
 
-                const AuditsLogs = await message.guild.fetchAuditLogs({
-                    type: Discord.AuditLogEvent.MessageDelete,
-                    limit: 1
-                })
+        const AuditsLogs = await message.guild.fetchAuditLogs({
+          type: Discord.AuditLogEvent.MessageDelete,
+          limit: 1
+        })
 
-                const LatestMessageDeleted = AuditsLogs.entries.first();
+        const LatestMessageDeleted = AuditsLogs.entries.first();
 
-                let Embed = new Discord.EmbedBuilder()
-                    .setColor("#490005")
-                    .setTitle("Message supprimé.")
-                    .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
-                    .setDescription(`Auteur du message : ${message.author}\nAuteur de la suppresion : ${LatestMessageDeleted.executor}\nDate de création du message : <t:${Math.floor(message.createdAt / 1000)}:F>\nContenu : \`\`\`${message.content}\`\`\``)
-                    .setFooter({ text: "Ton footer", iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
-                    .setTimestamp()
+        let Embed = new Discord.EmbedBuilder()
+          .setColor("#FFD6EF")
+          .setTitle("Message supprimé")
+          .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
+          .setDescription(`
+					
+					> **Auteur :** ${LatestMessageDeleted.executor}
+			    	> **Date :**   <t:${Math.floor(message.createdAt / 1000)}:F>
+					> **Contenu :** \`\`\`${message.content}\`\`\``)
+          .setFooter({ text: "MessageDelete" })
+          .setTimestamp()
 
-                channel.send({ embeds: [Embed] });
-            }
+        channel.send({ embeds: [Embed] });
+      }
 
-        } catch (err) {
+    } catch (err) {
 
-            console.log("Une erreur dans l'event messageDelete pour les logs du captcha.", err)
+      console.log("Une erreur dans l'event messageDelete pour les logs du captcha.", err)
 
-        }
-    })
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
+
+      let channel = await bot.channels.cache.get("1041816985920610354")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+    }
+  })
 }

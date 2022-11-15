@@ -5,6 +5,7 @@ const config = require("./config")
 const loadCommands = require("./Loaders/loadCommands")
 const loadEvents = require("./Loaders/loadEvents")
 
+
 bot.commands = new Discord.Collection()
 bot.fonction = {
   createId: require("./Fonctions/createId"),

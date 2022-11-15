@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const { pingE } = require("../.././json/emoji.json");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { pingE, TimeE } = require("../.././json/emoji.json");
 
 
 
@@ -16,6 +17,15 @@ module.exports = {
     await message.deferReply()
 
     try {
+
+      const row = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder()
+            .setLabel("Actualiser")
+            .setStyle(ButtonStyle.Success)
+            //Mettre le lien de ton bot
+            .setCustomId("Ping")
+        )
 
       let pingEmbed = new Discord.EmbedBuilder()
         .setColor("#FF5D00")
@@ -35,12 +45,18 @@ module.exports = {
           .setColor("#0070FF")
           .setTitle(`La lantence du bot`)
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-          .setDescription(`${pingE} Le ping du bot est de : \`${bot.ws.ping}\` ms`)
+          .setDescription(`
+                    
+          > ${pingE} **Bot :** \`${bot.ws.ping}\` ms 
+          > ${pingE} **API :** \`${Date.now() - message.createdTimestamp - 400}\` ms
+          > ${TimeE} **Temps Uptime :** ${Math.round(bot.uptime / (1000 * 60 * 60)) + "h " + (Math.round(bot.uptime / (1000 * 60)) % 60) + "m " + (Math.round(bot.uptime / 1000) % 60) + "s "}`)
           .setTimestamp()
           .setFooter({ text: "Ping" })
 
-        setTimeout(() => message.editReply({ embeds: [pingEmbed] }), 1000)
+        setTimeout(() => message.editReply({ embeds: [pingEmbed], components: [row] }), 1000)
+
       })
+
 
     } catch (err) {
       console.log('Une erreur sur la commande ping', err)

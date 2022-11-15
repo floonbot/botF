@@ -25,8 +25,10 @@ module.exports = async (bot, channels) => {
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`
                 
+                > **Auteur :** ${LatestChannel.executor.tag}
                 > **Salon :** ${channels.name}
-                > **Auteur :** ${LatestChannel.executor.tag}`)
+                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}:F>\n`)
+
         .setFooter({ text: "channelDelete" })
         .setTimestamp()
 
@@ -36,7 +38,7 @@ module.exports = async (bot, channels) => {
 
   } catch (err) {
 
-    console.log("Une erreur dans l'event channelDelete pour la création du salon de log.", err)
+    console.log("Une erreur dans l'event channelDelete pour la création du salon de log", err)
 
     fs.writeFile("./erreur.txt", `${err.stack}`, () => {
       return
