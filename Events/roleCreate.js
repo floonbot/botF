@@ -9,7 +9,7 @@ module.exports = async (bot, channels) => {
 
     db.query(`SELECT logs FROM server WHERE guild = '${channels.guild.id}'`, async (err, req) => {
       const fetchAuditLogs = await channels.guild.fetchAuditLogs({
-        type: Discord.AuditLogEvent.ChannelUpdate,
+        type: Discord.AuditLogEvent.RoleCreate,
         limit: 1
       })
 
@@ -21,15 +21,15 @@ module.exports = async (bot, channels) => {
 
       let Embed = new Discord.EmbedBuilder()
         .setColor("#FFD6EF")
-        .setTitle("update d'un salon")
+        .setTitle("Rôle create")
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`
                 
                 > **Auteur :** ${LatestChannel.executor.tag}
-                > **Salon :** ${channels.name}
-                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}:F>`)
+                > **Rôle :** ${channels.name}
+                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}:F>\n`)
 
-        .setFooter({ text: "channelUpdate" })
+        .setFooter({ text: "roleCreate" })
         .setTimestamp()
 
       channel.send({ embeds: [Embed] });
@@ -38,14 +38,14 @@ module.exports = async (bot, channels) => {
 
   } catch (err) {
 
-    console.log("Une erreur dans l'event channelUpdat pour la création du salon de log", err)
+    console.log("Une erreur dans l'event roleCreate pour la création du salon de log", err)
 
     fs.writeFile("./erreur.txt", `${err.stack}`, () => {
       return
     })
 
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${channels.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+    channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 }
 

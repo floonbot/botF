@@ -16,23 +16,22 @@ module.exports = async (bot, message) => {
       if (!channel) return;
 
       const AuditsLogs = await message.guild.fetchAuditLogs({
-        type: Discord.AuditLogEvent.EmojiUpdate,
-        limit: 1
+        type: Discord.AuditLogEvent.InviteUpdate
+
       })
 
       const LatestMessageDeleted = AuditsLogs.entries.first();
 
       let Embed = new Discord.EmbedBuilder()
         .setColor("#FFD6EF")
-        .setTitle("Emojie Update")
+        .setTitle("InviteUpdate")
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`
                 
                 > **Auteur :** ${LatestMessageDeleted.executor.tag}
-                > **Name : **${message.name}
                 > **Date  :** <t:${Math.floor(message.createdAt / 1000)}:F>`)
 
-        .setFooter({ text: "emojiUpdate" })
+        .setFooter({ text: "inviteCreate" })
         .setTimestamp()
 
       channel.send({ embeds: [Embed] });
@@ -40,14 +39,14 @@ module.exports = async (bot, message) => {
 
     } catch (err) {
 
-      console.log("Une erreur dans l'event emjoiUpdate pour les logs", err)
+      console.log("Une erreur dans l'event inviteUpdate pour les logs", err)
 
       fs.writeFile("./erreur.txt", `${err.stack}`, () => {
         return
       })
 
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   })
 }

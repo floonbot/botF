@@ -16,7 +16,7 @@ module.exports = async (bot, message) => {
       if (!channel) return;
 
       const AuditsLogs = await message.guild.fetchAuditLogs({
-        type: Discord.AuditLogEvent.EmojiUpdate,
+        type: Discord.AuditLogEvent.EmojiDelete,
         limit: 1
       })
 
@@ -24,7 +24,7 @@ module.exports = async (bot, message) => {
 
       let Embed = new Discord.EmbedBuilder()
         .setColor("#FFD6EF")
-        .setTitle("Emojie Update")
+        .setTitle("Emojie supprimer")
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`
                 
@@ -32,7 +32,7 @@ module.exports = async (bot, message) => {
                 > **Name : **${message.name}
                 > **Date  :** <t:${Math.floor(message.createdAt / 1000)}:F>`)
 
-        .setFooter({ text: "emojiUpdate" })
+        .setFooter({ text: "emojiDelete" })
         .setTimestamp()
 
       channel.send({ embeds: [Embed] });
@@ -40,7 +40,7 @@ module.exports = async (bot, message) => {
 
     } catch (err) {
 
-      console.log("Une erreur dans l'event emjoiUpdate pour les logs", err)
+      console.log("Une erreur dans l'event emojiDelete pour les logs", err)
 
       fs.writeFile("./erreur.txt", `${err.stack}`, () => {
         return

@@ -29,7 +29,7 @@ module.exports = async (bot, message) => {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
           .setDescription(`
 					
-					> **Auteur :** ${LatestMessageDeleted.executor}
+					> **Auteur :** ${LatestMessageDeleted.executor.tag}
 			    	> **Date :**   <t:${Math.floor(message.createdAt / 1000)}:F>
 					> **Contenu :** \`\`\`${message.content}\`\`\``)
           .setFooter({ text: "MessageDelete" })
@@ -47,7 +47,7 @@ module.exports = async (bot, message) => {
       })
 
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   })
 }
