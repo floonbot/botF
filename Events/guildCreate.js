@@ -2,8 +2,8 @@ const fs = require('fs');
 module.exports = async (bot, guild,) => {
 
   try {
-    let db = bot.db;
 
+    let db = bot.db;
 
     db.query(`SELECT * FROM server WHERE guild = '${guild.id}'`, async (err, req) => {
 
@@ -13,15 +13,21 @@ module.exports = async (bot, guild,) => {
 
       }
     })
+
   } catch (err) {
+    console.log(`
+    >------------ OUPS UNE ERREUR ------------<
+    
+    UNE ERREUR DANS L'EVENT GUILDCREATE !!
 
-    console.log("Une erreur dans l'event guildCreate pour la création du captcha, logs et antiraid.", err)
+    >--------------- L'ERREUR ----------------<
 
-    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-      return
-    })
-
+    ${err}
+    
+    >-----------------------------------------<
+    `)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+    channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT GUILDCREATE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 }

@@ -32,7 +32,6 @@ module.exports = async (bot, member,) => {
 
       let msg = await channel.send({ content: `${member}, Vous avez 2 minutes pour faire le captcha ! Si vous le réussissez pas vous serez exclue du serveur`, files: [new Discord.AttachmentBuilder((await captcha.canvas).toBuffer(), { name: "captcha.png" })] })
 
-
       const addRole = member.guild.roles.cache.find(r => r.name === "Non verif")
       if (!addRole) {
         const addRole = await member.guild.roles.create({
@@ -44,6 +43,7 @@ module.exports = async (bot, member,) => {
       }
 
       try {
+
         let filter = m => m.author.id === member.user.id;
         let response = (await channel.awaitMessages({ filter, max: 1, time: 120000, errors: ["time"] })).first()
 
@@ -72,22 +72,27 @@ module.exports = async (bot, member,) => {
         await member.kick("pas fait le captcha")
 
       }
-
     })
+
   } catch (err) {
+    console.log(`
+    >------------ OUPS UNE ERREUR ------------<
+    
+    UNE ERREUR DANS L'EVENT CAPTCHA !!
 
-    console.log("Une erreur dans l'event guildMemberAdd pour la résolution du captcha", err)
+    >--------------- L'ERREUR ----------------<
 
-    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-      return
-    })
-
+    ${err}
+    
+    >-----------------------------------------<
+    `)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
+    channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT CAPTCHA !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 
   try {
+
     db.query(`SELECT * FROM welcomes WHERE guildId = '${member.guild.id}'`, async (err, req) => {
 
       if (req.length < 1 || Boolean(req[0].welcome) === false) return;
@@ -103,18 +108,23 @@ module.exports = async (bot, member,) => {
         .setColorFont("#4B006E")
         .setText(`Bienvenue sur le serveur ${member.guild.name}`)
         .toHome()
-
       await channel.send({ files: [new Discord.AttachmentBuilder(Welcome.toBuffer(), { name: "welcome.png" })] })
     })
+
   } catch (err) {
+    console.log(`
+    >------------ OUPS UNE ERREUR ------------<
+    
+    UNE ERREUR DANS L'EVENT WELCOME !!
 
-    console.log("Une erreur dans l'event guildMemberAdd pour la création du welcome", err)
+    >--------------- L'ERREUR ----------------<
 
-    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-      return
-    })
-
+    ${err}
+    
+    >-----------------------------------------<
+    `)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+    channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT WELCOME !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 }

@@ -46,7 +46,7 @@ module.exports = {
       }
 
       await message.guild.emojis.create({ attachment: emoji, name: name }).then(emoji => {
-        message.reply({ content: `Nouveaux émojie ajouter sur le serveur ${emoji.toString()} avec le nom ${emoji.name}`, ephemeral: true })
+        message.reply({ content: `Nouveau émoji ajouter sur le serveur ${emoji.toString()} avec le nom ${emoji.name}`, ephemeral: true })
 
       })
 
@@ -54,7 +54,7 @@ module.exports = {
       console.log(`
       >------------ OUPS UNE ERREUR ------------<
       
-      UNE ERREUR DANS LA COMMANDE EMOJI !!
+      UNE ERREUR DANS LA COMMANDE ADD-EMOJI !!
 
       >--------------- L'ERREUR ----------------<
 
@@ -62,14 +62,11 @@ module.exports = {
       
       >-----------------------------------------<
       `)
-      message.reply({ content: `Je ne peux pas copie l'emoji`, ephemeral: true })
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE ADD-EMOJI !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+
+      message.reply({ content: `Je ne peux pas copie l'emoji`, ephemeral: true })
     }
   }
 }

@@ -40,6 +40,7 @@ module.exports = {
     if (member && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply({ content: "Tu ne peux pas kick cette personne !!", ephemeral: true })
 
     try {
+
       let kickEmbed = new Discord.EmbedBuilder()
         .setColor("#FF0000")
         .setTitle(`Kick par ${message.user.tag}`)
@@ -53,7 +54,7 @@ module.exports = {
         .setFooter({ text: "Kick" })
       await user.send({ embeds: [kickEmbed] })
 
-    } catch (err) { }
+    } catch (err) { return }
 
     try {
 
@@ -70,7 +71,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "kick" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let kickEmbed = new Discord.EmbedBuilder()
@@ -84,21 +84,27 @@ module.exports = {
         > ${textE} **Raison :** \`${reason}\`!`)
           .setTimestamp()
           .setFooter({ text: "kick" })
-
         setTimeout(async () => await message.editReply({ embeds: [kickEmbed] }), 2000)
       })
       await member.kick(reason)
 
     } catch (err) {
-      console.log(`Une erreur dans la commande kick`, err)
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE KICK !!
 
-      fs.writeFile("./erreur.txt", `${err.stack} `, () => {
-        return
-      })
+      >--------------- L'ERREUR ----------------<
 
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE KICK !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+
     let ID = await bot.fonction.createId("KICK")
 
     db.query(`INSERT INTO kicks (guild, guildId, user, userId, author, authorId, kick, reason, date) VALUES ('${message.guild.name}', '${message.guild.id}','${user.tag}', '${user.id}','${message.user.tag}','${message.user.id}', '${ID}', '${reason.replace(/'/g, "\\'")}', '${Date.now()}')`)

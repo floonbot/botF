@@ -19,7 +19,6 @@ module.exports = async (bot, interaction) => {
         await interaction.respond(entry === "" ? bot.commands.map(cmd => ({ name: cmd.name, value: cmd.name })) : choices.map(choice => ({ name: choice.name, value: choice.name })))
       }
 
-
       if (interaction.commandName === "eval") {
 
         let choices = ["+", "-", "*", "/", "%"]
@@ -33,12 +32,14 @@ module.exports = async (bot, interaction) => {
         let sortie = choices.filter(c => c.includes(entry))
         await interaction.respond(entry === "" ? sortie.map(c => ({ name: c, value: c })) : sortie.map(c => ({ name: c, value: c })))
       }
+
       if (interaction.commandName === "nsfw") {
 
         let choices = ["pussy", "aHarem"]
         let sortie = choices.filter(c => c.includes(entry))
         await interaction.respond(entry === "" ? sortie.map(c => ({ name: c, value: c })) : sortie.map(c => ({ name: c, value: c })))
       }
+
       if (interaction.commandName === "pfc") {
 
         let choices = ["pierre", "feuille", "ciseaux"]
@@ -47,34 +48,52 @@ module.exports = async (bot, interaction) => {
       }
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT AUTOCOMPLETE !!
+  
+      >--------------- L'ERREUR ----------------<
 
-      console.log("Une erreur dans l'event interactionCreate pour l'autocomplete.", err)
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${interactionguild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT AUTOCOMPLETE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 
   if (interaction.type === Discord.InteractionType.ApplicationCommand) {
 
     try {
+
       const command = interaction.client.commands.get(interaction.commandName);
       command?.run?.(bot, interaction, interaction.options, bot.db)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT POUR CREE LA COMMANDE !!
 
-      console.log("Une erreur dans l'event interactionCreate pour la création des commande.", err)
+      >--------------- L'ERREUR ----------------<
+
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
+      let channel = await bot.channels.cache.get("1041816985920610354")
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT POUR CREE LA COMMANDE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 
   if (interaction.isButton()) {
 
     try {
+
       if (interaction.customId.startsWith("reglement")) {
 
         const role = interaction.guild.roles.cache.get(interaction.customId.split("reglement")[1])
@@ -83,20 +102,27 @@ module.exports = async (bot, interaction) => {
 
         })
       }
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT POUR LE REGLEMENT !!
+  
+      >--------------- L'ERREUR ----------------<
 
-      console.log("Une erreur dans l'event interactionCreate pour la création des boutons pour le réglement.", err)
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${interactionguild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT REGLEMENT !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
-    try {
-      if (interaction.customId === "Ping") {
 
+    try {
+
+      if (interaction.customId === "Ping") {
 
         const row = new ActionRowBuilder()
           .addComponents(
@@ -117,21 +143,26 @@ module.exports = async (bot, interaction) => {
                     > ${TimeE}**Temps Uptime :** ${Math.round(bot.uptime / (1000 * 60 * 60)) + "h " + (Math.round(bot.uptime / (1000 * 60)) % 60) + "m " + (Math.round(bot.uptime / 1000) % 60) + "s "}`)
           .setTimestamp()
           .setFooter({ text: "Ping" })
-
         interaction.update({ embeds: [pingEmbed], components: [row] })
-
       }
+
     } catch (err) {
-
-      console.log("Une erreur dans l'event interactionCreate pour la création des boutons pour le ping", err)
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT PING !!
+  
+      >--------------- L'ERREUR ----------------<
+  
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${interaction.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT PING !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+
     try {
 
       if (interaction.customId === "primary") {
@@ -164,11 +195,9 @@ module.exports = async (bot, interaction) => {
               .setEmoji("❌")
               .setLabel('Supprimer le ticket')
               .setStyle(ButtonStyle.Danger)
-          );
-
+        );
         await channel.send({ embeds: [clearembed], components: [deletebutton] })
       }
-
 
       if (interaction.customId === "delete") {
 
@@ -184,8 +213,7 @@ module.exports = async (bot, interaction) => {
               .setCustomId('non')
               .setLabel('non')
               .setStyle(ButtonStyle.Danger)
-          )
-
+        )
         await interaction.reply({ content: "**Etes vous sur de vouloir supprimer ce ticket ?**", components: [surbutton], ephemeral: true })
       }
 
@@ -197,17 +225,21 @@ module.exports = async (bot, interaction) => {
         await interaction.reply({ content: "**Suppresion de ticket annulé**", ephemeral: true })
       }
 
-
     } catch (err) {
-
-      console.log("Une erreur dans l'event interactionCreate pour la création des boutons pour le ticket.", err)
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT TICKET !!
+  
+      >--------------- L'ERREUR ----------------<
+  
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${interactionguild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT TICKET !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

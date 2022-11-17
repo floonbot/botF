@@ -25,6 +25,7 @@ module.exports = {
       )
 
     try {
+
       let n = 0
       const guild = bot.guilds.cache.sort((a, b) => b.memberCount - a.memberCount).map((guild) => `**${n += 1}) __${guild.name}__ :**\n\`\`\`${numStr(guild.memberCount)} Membres\n\`\`\``).slice(0, 5).join("\n");
 
@@ -39,7 +40,6 @@ module.exports = {
       \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "server-list" })
-
       await message.followUp({ embeds: [botEmbed] }).then(() => {
 
         const embed = new EmbedBuilder()
@@ -49,19 +49,24 @@ module.exports = {
           .setColor("#0070FF")
           .setTimestamp()
           .setFooter({ text: "server-list" })
-
         setTimeout(async () => await message.editReply({ embeds: [embed], components: [row] }), 2000)
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE SERVEUR-LIST !!
 
-      console.log(`Une erreur dans le commande serveur-list`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE SERVEUR-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

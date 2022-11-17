@@ -47,7 +47,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "role-member-list" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let roleEmbed = new EmbedBuilder()
@@ -59,19 +58,24 @@ module.exports = {
                 ${roled.members.map(m => `>  ${roled} : \`${m.user.username}\``).join("\n") || "Aucun utilisateur"}`)
           .setFooter({ text: "role-member-list" })
           .setTimestamp()
-
         setTimeout(async () => await message.editReply({ embeds: [roleEmbed] }), 1000)
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE ROLE-MEMBER-LIST !!
 
-      console.log(`Une erreur dans la commande role-member-list`, err);
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE ROLE-MEMBER-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

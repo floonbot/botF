@@ -1,1 +1,1 @@
-Error: ENOENT: no such file or directory, stat 'C:\Users\Floon\OneDrive\Bureau\bot\🧾'
+Error: ENOENT: no such file or directory, stat 'C:\Users\Floon\OneDrive\Bureau\bot\ddd'

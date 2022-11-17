@@ -27,6 +27,7 @@ module.exports = {
     if (!member) return message.reply({ content: "pas de membre !!", ephemeral: true })
 
     try {
+
       db.query(`SELECT * FROM warns WHERE guildId = '${message.guildId}' AND userId = '${user.id}'`, async (err, req) => {
 
         if (req.length < 1) return message.reply({ content: "Ce membre n'a pas de warn !!", ephemeral: true })
@@ -45,7 +46,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
           .setTimestamp()
           .setFooter({ text: "warnlist" })
-
         await message.followUp({ embeds: [Embed] }).then(async () => {
 
           let Embed = new Discord.EmbedBuilder()
@@ -63,16 +63,22 @@ module.exports = {
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE WARN-LIST !!
 
-      console.log(`Une erreur dans la commande warnlist`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE WARN-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

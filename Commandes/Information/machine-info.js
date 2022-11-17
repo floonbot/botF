@@ -33,7 +33,6 @@ module.exports = {
             \`veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "Info-machine" })
-
       await message.followUp({ embeds: [Embed] }).then(async () => {
 
         const cpuUsage = `> Model : \`${await cpu.model()}\`\n> Utilisé: \`${await cpu.usage() + " %"}\`\n> Restant : \`${await cpu.free() + " %"}\`\n> Logique : \`${await cpu.count()}\`\n> Cœur : \`${(await si.cpu()).physicalCores}\`\n> Fréquence : \`${(await si.cpu()).speed}\`\n> Avg :\`${await cpu.loadavg()}\`\n> Avg :\`${await cpu.loadavgTime()}\``;
@@ -51,7 +50,6 @@ module.exports = {
               //Mettre le lien de ton bot
               .setURL("https://discord.com/api/oauth2/authorize?client_id=1041282190060826635&permissions=8&scope=bot")
           )
-
 
         const embed = new EmbedBuilder()
 
@@ -73,17 +71,22 @@ module.exports = {
 
         setTimeout(async () => await message.editReply({ embeds: [embed], components: [row] }), 1000)
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE MACHINE-INFO !!
 
-      console.log(`Une erreur dans la commande info_machine`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack} `, () => {
-        return
-      })
-
-      let channel = await bot.channels.cache.get("1038859689833791528")
-      channel.send({ content: `⚠️ Une erreur est apparue! Sur le  ${message.guild.name}!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
+      let channel = await bot.channels.cache.get("1041816985920610354")
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE MACHINE-INFO !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
-
   }
 }

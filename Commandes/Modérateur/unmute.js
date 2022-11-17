@@ -39,7 +39,9 @@ module.exports = {
     if (!member.isCommunicationDisabled()) return message.reply({ content: "Ce membre est pas mute !!", ephemeral: true })
 
     try {
+
       try {
+
         let unMuteEmbed = new Discord.EmbedBuilder()
           .setColor("#FF0000")
           .setTitle(`Unmute par ${message.user.tag}`)
@@ -53,7 +55,7 @@ module.exports = {
           .setFooter({ text: "Unmute" })
         await user.send({ embeds: [unMuteEmbed] })
 
-      } catch (err) { }
+      } catch (err) { return }
 
       await message.deferReply()
 
@@ -68,7 +70,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "unmute" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let unMuteEmbed = new Discord.EmbedBuilder()
@@ -82,21 +83,25 @@ module.exports = {
             > ${textE} **Raison :** \`${reason}\``)
           .setTimestamp()
           .setFooter({ text: "Unmute" })
-
         setTimeout(async () => await message.editReply({ embeds: [unMuteEmbed] }), 2000)
       })
       await member.timeout(null, reason)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE UNMUTE !!
 
-      console.log(`Une erreur dans la commande unmute`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE UNMUTE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

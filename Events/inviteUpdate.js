@@ -11,14 +11,12 @@ module.exports = async (bot, message) => {
 
       if (req[0].logs === "false") return;
 
-
       let channel = message.guild.channels.cache.get(req[0].logs);
       if (!channel) return;
 
       const AuditsLogs = await message.guild.fetchAuditLogs({
         type: Discord.AuditLogEvent.InviteUpdate,
         limit: 1
-
       })
 
       const LatestMessageDeleted = AuditsLogs.entries.first();
@@ -32,22 +30,25 @@ module.exports = async (bot, message) => {
                 > **Auteur :** ${LatestMessageDeleted.executor.tag}
                 > **Date  :** <t:${Math.floor(message.createdAt / 1000)}:F>`)
 
-        .setFooter({ text: "inviteCreate" })
+        .setFooter({ text: "inviteUpdate" })
         .setTimestamp()
-
       channel.send({ embeds: [Embed] });
 
-
     } catch (err) {
-
-      console.log("Une erreur dans l'event inviteUpdate pour les logs", err)
-
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS L'EVENT INVITEUPDATE !!
+  
+      >--------------- L'ERREUR ----------------<
+  
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT INVITEUPDATE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   })
 }

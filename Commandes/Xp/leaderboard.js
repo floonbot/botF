@@ -16,6 +16,7 @@ module.exports = {
     db.query(`SELECT * FROM xp WHERE guildId = '${message.guildId}'`, async (err, req) => {
 
       try {
+
         if (req.length < 1) return message.reply({ content: "Personne n'a de l'xp !!", ephemeral: true })
 
         await message.deferReply()
@@ -45,15 +46,20 @@ module.exports = {
         await message.followUp({ files: [new Discord.AttachmentBuilder(Image.toBuffer(), { name: "leaderboard.png" })] })
 
       } catch (err) {
+        console.log(`
+        >------------ OUPS UNE ERREUR ------------<
+        
+        UNE ERREUR DANS LA COMMANDE LEADERBOARD !!
+  
+        >--------------- L'ERREUR ----------------<
 
-        console.log("Une erreur dans la commande leaderboard", err)
-
-        fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-          return
-        })
-
+        ${err}
+        
+        >-----------------------------------------<
+        `)
+        fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
         let channel = await bot.channels.cache.get("1041816985920610354")
-        channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+        channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE LEADERBOARD !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
       }
     })
   }

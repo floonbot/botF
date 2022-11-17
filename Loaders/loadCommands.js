@@ -1,3 +1,4 @@
+const console = require("console");
 const { readdirSync, lstatSync } = require("fs")
 
 module.exports = async bot => {

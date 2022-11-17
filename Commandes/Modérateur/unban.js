@@ -30,15 +30,17 @@ module.exports = {
   async run(bot, message, args) {
 
     try {
+
       let user = args.getUser("membre");
-      if (!user) return message.reply("Pas de membre à unban !!")
+      if (!user) return message.reply({ content: "Pas de membre à unban !!", ephemeral: true })
 
       let reason = args.get("raison").value;
       if (!reason) reason = "Pas de raison fournie !!";
 
-      if (!(await message.guild.bans.fetch()).get(user.id)) return message.reply("ce membre est pas ban"), message.reply({ content: '🔴 ** erreur envoyé avec succès ! **🔴', ephemeral: true })
+      if (!(await message.guild.bans.fetch()).get(user.id)) return message.reply({ content: "ce membre est pas ban", ephemeral: true })
 
       try {
+
         let Embed1 = new Discord.EmbedBuilder()
           .setColor("#FF0000")
           .setTitle(`Unban par ${message.user.tag}`)
@@ -52,7 +54,7 @@ module.exports = {
           .setFooter({ text: "Unban" })
         await user.send({ embeds: [Embed1] })
 
-      } catch (err) { }
+      } catch (err) { return }
 
       await message.deferReply()
 
@@ -67,7 +69,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "Unban" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let Embed = new Discord.EmbedBuilder()
@@ -81,22 +82,25 @@ module.exports = {
                 > ${textE} **Raison : \`${reason}\``)
           .setTimestamp()
           .setFooter({ text: "Unban" })
-
         setTimeout(async () => await message.channel.editReply({ embeds: [Embed] }), 2000)
       })
       await message.guild.members.unban(user, reason)
 
-
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE UNBAN !!
 
-      console.log('Une erreur sur la commande unban', err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE UNBAN !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

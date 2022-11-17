@@ -47,9 +47,9 @@ module.exports = {
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setTimestamp()
         .setFooter({ text: "setcommande" })
-
       return await message.followUp({ embeds: [mauvais] })
     }
+
     let etat = args.getString("état")
     if (etat !== "on" && etat !== "off") {
 
@@ -60,7 +60,6 @@ module.exports = {
         .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
         .setTimestamp()
         .setFooter({ text: "setcommande" })
-
       return await message.followUp({ embeds: [mauvais] })
     }
 
@@ -91,9 +90,9 @@ module.exports = {
               .setDescription(`Le AntiRaid est bien désactiver`)
               .setTimestamp()
               .setFooter({ text: "SetAntiRaid" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
+
         } else {
 
           db.query(`UPDATE server SET antiraid = 'true' WHERE guild = '${message.guildId}'`)
@@ -107,7 +106,6 @@ module.exports = {
               .setDescription(`Le AntiRaid est bien activé`)
               .setTimestamp()
               .setFooter({ text: "SetAntiRaid" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
         }
@@ -126,9 +124,9 @@ module.exports = {
               .setDescription(`Le captcha est bien désactiver \n le rôle \`Non verif\` ne sera plus donner au personne qui rejoint le serveur`)
               .setTimestamp()
               .setFooter({ text: "Setcaptcha" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
+
         } else {
 
           let channel = args.getChannel("salon")
@@ -147,7 +145,6 @@ module.exports = {
               .setDescription(`Le captcha est bien activé sur le salon ${channel} \n\n 🔺IMPORTANT🔺\n\n \` D'avoir un rôle \` \n\n \`Non verif\` sur le serveur sans aucune permissions ( si pas le de rôle, il sera automatiquemen crée )  !! \n Dans le salon ou se trouve le captcha rajouter comme permission sur le rôle \`Non verif\`\`voir salon et envoyer un message\``)
               .setTimestamp()
               .setFooter({ text: "Setcaptcha" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
         }
@@ -167,10 +164,9 @@ module.exports = {
               .setDescription(`Le goodbye est bien désactiver sur le channel`)
               .setTimestamp()
               .setFooter({ text: "goodbye" })
-
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
+
         } else {
 
           let channel = args.getChannel("salon")
@@ -210,10 +206,9 @@ module.exports = {
               .setDescription(`Le setlogs est bien désactiver sur le channel`)
               .setTimestamp()
               .setFooter({ text: "setlogs" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
-
           })
+
         } else {
 
           let channel = args.getChannel("salon")
@@ -232,9 +227,7 @@ module.exports = {
               .setDescription(`Le setlogs est bien activer sur le channel`)
               .setTimestamp()
               .setFooter({ text: "setlogs" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
-
           })
         }
       }
@@ -252,9 +245,9 @@ module.exports = {
               .setDescription(`Le suggest est bien désactiver sur le channel`)
               .setTimestamp()
               .setFooter({ text: "suggest" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
+
         } else {
 
           let channel = args.getChannel("salon")
@@ -273,7 +266,6 @@ module.exports = {
               .setDescription(`Le suggest est bien active sur le salon ${channel}`)
               .setTimestamp()
               .setFooter({ text: "suggest" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
         }
@@ -293,9 +285,9 @@ module.exports = {
               .setDescription(`Le welcome est bien désactiver sur le channel`)
               .setTimestamp()
               .setFooter({ text: "welcome" })
-
             setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
           })
+
         } else {
 
           let channel = args.getChannel("salon")
@@ -321,15 +313,20 @@ module.exports = {
       }
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE SETCOMMANDES !!
 
-      console.log("Une erreur dans la commande setcommande", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE SETCOMMANDES !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

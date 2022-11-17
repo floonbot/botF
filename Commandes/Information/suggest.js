@@ -22,6 +22,7 @@ module.exports = {
   async run(bot, message, args, db) {
 
     try {
+
       db.query(`SELECT * FROM suggests WHERE guildId = '${message.guild.id}'`, async (err, req) => {
 
         if (req.length < 1 || Boolean(req[0].suggest) === false) return
@@ -49,16 +50,22 @@ module.exports = {
           message.react("❌")
         });
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE SUGGEST !!
 
-      console.log("Une erreur dans la commande suggest", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE SUGGEST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

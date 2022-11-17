@@ -30,10 +30,10 @@ module.exports = {
   async run(bot, interaction) {
 
     let user = await interaction.options.getUser("membre");
-
     let reason = interaction.options.getString("texte")
 
     try {
+
       try {
 
         await interaction.deferReply({ ephemeral: true })
@@ -49,7 +49,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
           .setTimestamp()
           .setFooter({ text: "dm" })
-
         await interaction.followUp({ embeds: [Embed] }).then(() => {
 
           let embed2 = new Discord.EmbedBuilder()
@@ -62,7 +61,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: "dm" })
           setTimeout(async () => await interaction.editReply({ embeds: [embed2] }), 500)
-
         })
 
         let Embed1 = new Discord.EmbedBuilder()
@@ -77,15 +75,20 @@ module.exports = {
       } catch (err) { }
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE DM !!
 
-      console.log(`Une erreur dans la commande dm`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE DM !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

@@ -27,27 +27,28 @@ module.exports = async (bot, channels) => {
 
                 > **Auteur :** ${LatestChannel.executor.tag}
                 > **Salon :** ${channels.name}
-                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}: F>\n`)
+                > **Date  :** <t:${Math.floor(channels.createdAt / 1000)}:F>\n`)
 
         .setFooter({ text: "channelCreate" })
         .setTimestamp()
-
       channel.send({ embeds: [Embed] });
-
     })
 
   } catch (err) {
+    console.log(`
+    >------------ OUPS UNE ERREUR ------------<
+    
+    UNE ERREUR DANS L'EVENT CHANNELCREATE !!
 
-    console.log("Une erreur dans l'event channelCreate pour la création du salon de log.", err)
+    >--------------- L'ERREUR ----------------<
 
-    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-      return
-    })
-
+    ${err}
+    
+    >-----------------------------------------<
+    `)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
-
+    channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT CHANNELCREATE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 }
 

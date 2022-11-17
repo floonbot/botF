@@ -55,7 +55,9 @@ module.exports = {
     if (member.isCommunicationDisabled()) return message.reply({ content: "Ce membre est déja mute !!", ephemeral: true })
 
     try {
+
       try {
+
         let muteEmbed = new Discord.EmbedBuilder()
           .setColor("#FF0000")
           .setTitle(`Mute par ${message.user.tag}`)
@@ -69,8 +71,7 @@ module.exports = {
           .setTimestamp()
           .setFooter({ text: "Mute" })
         await user.send({ embeds: [muteEmbed] })
-      } catch (err) { }
-
+      } catch (err) { return }
       await message.deferReply()
 
       let Embed = new Discord.EmbedBuilder()
@@ -84,7 +85,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "mute" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let muteEmbed = new Discord.EmbedBuilder()
@@ -99,7 +99,6 @@ module.exports = {
             > ${textE} **Raison :** \`${reason}\`!`)
           .setTimestamp()
           .setFooter({ text: "Mute" })
-
         setTimeout(async () => await message.editReply({ embeds: [muteEmbed] }), 2000)
       })
       await member.timeout(ms(time), reason)
@@ -109,14 +108,20 @@ module.exports = {
       db.query(`INSERT INTO mutes (guild, guildId, user, userId, author, authorId, mute, time, reason, date) VALUES ('${message.guild.name}', '${message.guild.id}','${user.tag}', '${user.id}','${message.user.tag}','${message.user.id}', '${ID}', '${time}', '${reason.replace(/'/g, "\\'")}', '${Date.now()}')`)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE MUTE !!
 
-      console.log(`Une erreur dans la commande mute`, err)
-      fs.writeFile("./erreur.txt", `${err.stack} `, () => {
-        return
-      })
+      >--------------- L'ERREUR ----------------<
 
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE MUTE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

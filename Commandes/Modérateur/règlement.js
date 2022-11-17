@@ -48,8 +48,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "règlement" })
-
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let VerifEmbed = new EmbedBuilder()
@@ -58,7 +56,6 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL())
           .setFooter({ text: `${bot.user.username} | règlement`, iconURL: bot.user.displayAvatarURL() })
           .setColor("#FF5D")
-
         let sendChannel = message.editReply({
 
           embeds: [VerifEmbed],
@@ -77,15 +74,20 @@ module.exports = {
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE REGLEMENT !!
 
-      console.log("Une erreur dans la commande règlement.", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack} `, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE REGLEMENT !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

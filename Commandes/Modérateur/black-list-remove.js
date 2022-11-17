@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const { stopE, modoE, serveurE, userE } = require("../.././json/emoji.json");
 
-
 module.exports = {
 
   name: "black-list-remove",
@@ -48,7 +47,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
           .setTimestamp()
           .setFooter({ text: "un black-list" })
-
         await message.followUp({ embeds: [pingEmbed] }).then(() => {
 
           let Embed = new Discord.EmbedBuilder()
@@ -62,22 +60,28 @@ module.exports = {
             > ${userE} **Membre qui est supprimé de la black list :** \`${user.tag}\``)
             .setTimestamp()
             .setFooter({ text: "Unblack list" })
-
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
+
         const removeRole = member.guild.roles.cache.find(r => r.name === "Black list")
         member.roles.remove(removeRole)
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE BLACK-LIST-REMOVE !!
 
-      console.log(`Une erreur dans la commande blacklistremove`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BLACK-LIST-REMOVE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

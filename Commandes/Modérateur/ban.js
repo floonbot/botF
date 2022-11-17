@@ -53,14 +53,9 @@ module.exports = {
                     > ${textE} **Raison :** \`${reason}\`!`)
           .setTimestamp()
           .setFooter({ text: "Ban" })
-
         await user.send({ embeds: [Embed] })
 
-      } catch (err) {
-
-        console.log("Je n'est pas envoyer le message en dm car le membre à les mp fermé !!")
-
-      }
+      } catch (err) { return }
 
       await message.deferReply()
 
@@ -75,7 +70,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "Ban" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let Embed = new Discord.EmbedBuilder()
@@ -89,9 +83,9 @@ module.exports = {
                 > ${textE} **Raison :** \`${reason}\``)
           .setTimestamp()
           .setFooter({ text: "Ban" })
-
         setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
       })
+
       await message.guild.bans.create(user.id, { reason: reason })
 
       let ID = await bot.fonction.createId("BAN")
@@ -99,15 +93,20 @@ module.exports = {
       db.query(`INSERT INTO bans (guild, guildId, user, userId, author, authorId, ban, reason, date) VALUES ('${message.guild.name}', '${message.guild.id}','${user.tag}', '${user.id}','${message.user.tag}','${message.user.id}', '${ID}', '${reason.replace(/'/g, "\\'")}', '${Date.now()}')`)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE BAN !!
 
-      console.log(`Une erreur dans la commande ban`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BAN !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

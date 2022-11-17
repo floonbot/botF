@@ -13,6 +13,7 @@ module.exports = {
   async run(bot, message) {
 
     try {
+
       await message.deferReply()
 
       let Embed = new EmbedBuilder()
@@ -26,7 +27,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "url" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let Embed = new EmbedBuilder()
@@ -35,19 +35,24 @@ module.exports = {
             `${urlE}> L'URL personnaliser du serveur est : **${message.guild.vanityURLCode}**` : `${urlE} Il n'y as pas d'URL personnaliser`)
           .setFooter({ text: `url` })
           .setTimestamp()
-
         setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE URL !!
 
-      console.log("Une erreur dans la commande url.", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE URL !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

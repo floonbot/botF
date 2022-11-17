@@ -40,8 +40,11 @@ module.exports = {
     if ((await message.guild.fetchOwner()).id === user.id) return message.reply({ content: "Tu ne peux pas warn le propriétaire du serveur !!", ephemeral: true })
     if (member && message.member.roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply({ content: "Tu ne peux pas warn ce membre !!", ephemeral: true })
     if ((await message.guild.members.fetchMe()).roles.highest.comparePositionTo(member.roles.highest) <= 0) return message.reply({ content: "Tu ne peux pas warn ce membre !!", ephemeral: true })
+
     try {
+
       try {
+
         let warnEmbed = new Discord.EmbedBuilder()
           .setColor("#FF0000")
           .setTitle(`Warn par ${message.user.tag}`)
@@ -55,7 +58,7 @@ module.exports = {
           .setFooter({ text: "Warn" })
         await user.send({ embeds: [warnEmbed] })
 
-      } catch (err) { }
+      } catch (err) { return }
 
       await message.deferReply()
 
@@ -70,7 +73,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "warn" })
-
       await message.followUp({ embeds: [Embed] }).then(() => {
 
         let warnEmbed = new Discord.EmbedBuilder()
@@ -83,22 +85,27 @@ module.exports = {
             > ${textE} **Raison :** \`${reason}\``)
           .setTimestamp()
           .setFooter({ text: "Warn" })
-
         setTimeout(async () => await message.editReply({ embeds: [warnEmbed] }), 2000)
       })
+
       let ID = await bot.fonction.createId("WARN")
       db.query(`INSERT INTO warns (guild, guildId, user, userId, author, authorId, warn, reason, date) VALUES ('${message.guild.name}', '${message.guild.id}','${user.tag}', '${user.id}','${message.user.tag}','${message.user.id}', '${ID}', '${reason.replace(/'/g, "\\'")}', '${Date.now()}')`)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE WARN !!
 
-      console.log(`Une erreur dans la commande warn`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE WARN !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 } 

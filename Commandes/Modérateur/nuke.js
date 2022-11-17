@@ -25,28 +25,33 @@ module.exports = {
     try {
 
       const channel = message.options.getChannel("channel");
-
       channel.clone({ position: channel.position.rawPosition }).then(async ch => {
+
         ch.send({ content: `Le salon a bien été recréer.` }).then((msg) => {
+
           setTimeout(() => msg.delete(), 10000)
         })
+
         await message.reply({ content: `J'ai bien recréer le salon ${ch}. Veuillez patienter pour la suppréssion du salon.` }).then((ch) => {
           setTimeout(() => channel.delete(), 10000)
         })
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE NUKE !!
 
-      console.log("Une erreur dans le commande nuke", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
-
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE NUKE !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

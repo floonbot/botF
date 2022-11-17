@@ -80,7 +80,6 @@ module.exports = {
             \`veuillez patienter\`.`)
         .setTimestamp()
         .setFooter({ text: "Black-list" })
-
       await message.followUp({ embeds: [pingEmbed] }).then(() => {
 
         let Embed = new Discord.EmbedBuilder()
@@ -96,9 +95,9 @@ module.exports = {
             > ${userE} **Pseudo :** \`${pseudo}\``)
           .setTimestamp()
           .setFooter({ text: "Black list" })
-
         setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
       })
+
       const addRole = member.guild.roles.cache.find(r => r.name === "Black list")
       if (!addRole) {
         const addRole = await member.guild.roles.create({
@@ -113,18 +112,21 @@ module.exports = {
       db.query(`INSERT INTO blacklists (guildId, guild, user, usertag, pseudo, jeux, author, blacklist, reason) VALUES ('${message.guild.id}', '${message.guild.name}', '${user.id}', '${user.tag}', '${pseudo}', '${jeux}', '${message.user.tag}', '${ID}', '${reason.replace(/'/g, "\\'")}')`)
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE BLACK-LIST-ADD !!
 
-      console.log(`Une erreur dans la commande blacklistadd`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BLACK-LIST-ADD !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
-
   }
-
 }
 

@@ -34,7 +34,9 @@ module.exports = {
     if (parseInt(number) <= 0 || parseInt(number) > 100) return message.reply({ content: "Il nous faut un nombre entre `0` et `100` inclus !!", ephemeral: true })
 
     try {
+
       try {
+
         let messages = await channel.bulkDelete(parseInt(number))
         await message.reply({ content: `J'ai bien supprimé \`${messages.size}\` message(s) dans le salon ${channel} !!`, ephemeral: true })
 
@@ -48,15 +50,20 @@ module.exports = {
       }
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE CLEAR !!
 
-      console.log(`Une erreur dans la commande clear`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE CLEAR !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

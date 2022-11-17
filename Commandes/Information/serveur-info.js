@@ -2,7 +2,6 @@ const fs = require('fs');
 const { serveurE, infoE } = require("../.././json/emoji.json");
 const { EmbedBuilder, ButtonStyle, ChannelType, ActionRowBuilder, ButtonBuilder } = require("discord.js")
 
-
 module.exports = {
 
   name: "serveur-info",
@@ -37,7 +36,6 @@ module.exports = {
 
         .setTimestamp()
         .setFooter({ text: "serveur-info" })
-
       await message.followUp({ embeds: [serveurEmbed] }).then(() => {
 
         serveurEmbed = new EmbedBuilder()
@@ -71,18 +69,24 @@ module.exports = {
                 > Emojis :\`${message.guild.emojis.cache.size}\`
                     `)
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
-
         setTimeout(async () => message.editReply({ embeds: [serveurEmbed], components: [row] }), 1000)
       })
+
     } catch (err) {
-      console.log(`Une erreur dans la commande serveur-info`, err)
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE SERVEUR-INFO !!
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
+      >--------------- L'ERREUR ----------------<
 
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE SERVEUR-INFO !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

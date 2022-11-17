@@ -19,7 +19,6 @@ module.exports = {
     }
   ],
 
-
   async run(bot, message, args, db) {
 
     let user;
@@ -29,6 +28,7 @@ module.exports = {
     } else user = message.user;
 
     try {
+
       db.query(`SELECT * FROM xp WHERE guildId = '${message.guildId}' AND userId = '${user.id}'`, async (err, req) => {
 
         db.query(`SELECT * FROM xp WHERE guildId = '${message.guildId}'`, async (err, all) => {
@@ -63,21 +63,25 @@ module.exports = {
             .setLevel(level)
             .setXpNeed(need)
             .toCard()
-
           await message.editReply({ files: [new Discord.AttachmentBuilder(Card.toBuffer(), { name: "rank.png" })] })
         })
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE RANK !!
 
-      console.log("Une erreur dans la commande rank.", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE RANK !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

@@ -40,6 +40,7 @@ module.exports = {
       if (req.length < 1) return message.reply({ content: "Ce membre n'a pas de warn !!", ephemeral: true })
 
       try {
+
         try {
 
           let unwarnEmbed = new Discord.EmbedBuilder()
@@ -55,7 +56,7 @@ module.exports = {
 
           await user.send({ embeds: [unwarnEmbed] })
 
-        } catch (err) { }
+        } catch (err) { return }
 
         await message.deferReply()
 
@@ -70,7 +71,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
           .setTimestamp()
           .setFooter({ text: "unwarn" })
-
         await message.followUp({ embeds: [Embed] }).then(() => {
 
           let unwarnEmbed = new Discord.EmbedBuilder()
@@ -83,20 +83,26 @@ module.exports = {
             > ${userE} **Membre :** \`${user.tag}\`!`)
             .setTimestamp()
             .setFooter({ text: "Unwarn" })
-
           setTimeout(async () => await message.editReply({ embeds: [unwarnEmbed] }), 2000)
         })
+
         db.query(`DELETE FROM warns WHERE guildId = '${message.guildId}' AND warn = '${warns}'`)
+
       } catch (err) {
-
-        console.log(`Une erreur dans la commande unwarn`, err)
-
-        fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-          return
-        })
-
+        console.log(`
+        >------------ OUPS UNE ERREUR ------------<
+        
+        UNE ERREUR DANS LA COMMANDE UNWARN !!
+  
+        >--------------- L'ERREUR ----------------<
+  
+        ${err}
+        
+        >-----------------------------------------<
+        `)
+        fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
         let channel = await bot.channels.cache.get("1041816985920610354")
-        channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+        channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE UNWARN !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
       }
     })
   }
