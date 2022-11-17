@@ -3,7 +3,6 @@ const fs = require("fs");
 const { Floon, infoE } = require("../.././json/emoji.json");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
-
 module.exports = {
 
   name: "bot-info",
@@ -37,7 +36,6 @@ module.exports = {
               \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "bot-info" })
-
       await message.followUp({ embeds: [botEmbed] }).then(() => {
 
         botEmbed = new Discord.EmbedBuilder()
@@ -57,20 +55,24 @@ module.exports = {
 
                 > **Créer :** <t:${parseInt(bot.user.createdTimestamp / 1000)}:R>
                `)
-
         setTimeout(() => message.editReply({ embeds: [botEmbed], components: [row] }), 1000)
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE BOT-INFO !!
 
-      console.log(`Une erreur dans le commande bot-info`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BOT-INFO !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

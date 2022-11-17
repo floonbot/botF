@@ -28,7 +28,6 @@ module.exports = {
               \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "ip" })
-
       await message.followUp({ embeds: [botEmbed] }).then(() => {
 
         libquery.query(`sulfuritium.fr`, 19132, 1000).then((data) => {
@@ -41,7 +40,6 @@ module.exports = {
         > 🔗 | Port: 19132
         > 👥 | Nombre de joueur en ligne: **${data.online}/${data.max}**`)
             .setTimestamp()
-
           setTimeout(() => message.editReply({ embeds: [onembed] }), 2500)
         }).catch(() => {
           const offembed = new EmbedBuilder()
@@ -56,16 +54,22 @@ module.exports = {
           setTimeout(() => message.editReply({ embeds: [offembed] }), 2000)
         });
       })
+
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE IP !!
 
-      console.log("Une erreur dans la commande ip.", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE IP !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

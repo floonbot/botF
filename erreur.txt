@@ -1,8 +1,1 @@
-DiscordAPIError[10062]: Unknown interaction
-    at SequentialHandler.runRequest (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\@discordjs\rest\dist\index.js:659:15)
-    at runMicrotasks (<anonymous>)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at async SequentialHandler.queueRequest (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\@discordjs\rest\dist\index.js:458:14)
-    at async REST.request (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\@discordjs\rest\dist\index.js:902:22)
-    at async ButtonInteraction.update (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\structures\interfaces\InteractionResponses.js:226:5)
-    at async module.exports (C:\Users\Floon\OneDrive\Bureau\bot\Events\interactionCreate.js:174:9)
+Error: ENOENT: no such file or directory, stat 'C:\Users\Floon\OneDrive\Bureau\bot\🧾'

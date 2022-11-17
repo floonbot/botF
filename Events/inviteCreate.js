@@ -16,7 +16,8 @@ module.exports = async (bot, message) => {
       if (!channel) return;
 
       const AuditsLogs = await message.guild.fetchAuditLogs({
-        type: Discord.AuditLogEvent.InviteCreate
+        type: Discord.AuditLogEvent.InviteCreate,
+        limit: 1
 
       })
 

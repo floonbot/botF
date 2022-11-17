@@ -9,7 +9,6 @@ module.exports = {
   permission: "Aucune",
   dm: false,
   category: "🥳Fun",
-
   options: [
     {
       type: "string",
@@ -22,9 +21,9 @@ module.exports = {
 
   async run(bot, message, args) {
 
-    try {
+    await message.deferReply()
 
-      await message.deferReply()
+    try {
 
       let quest = args.getString("question")
       let result = ["Oui", "Non", "Peut-être"][Math.floor(Math.random() * ["Oui", "Non", "Peut-être"].length)];
@@ -40,7 +39,6 @@ module.exports = {
               \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: `8 ball` })
-
       return message.followUp({ embeds: [cEmbed] }).then(() => {
 
         const ballEmbed = new EmbedBuilder()
@@ -53,20 +51,24 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
           .setTimestamp()
           .setFooter({ text: "8 ball" })
-
         setTimeout(async () => message.editReply({ embeds: [ballEmbed] }), 1500)
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE 8BALL !!
 
-      console.log(`Une erreur dans la commande 8ball`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE 8BALL !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

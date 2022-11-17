@@ -3,7 +3,6 @@ const fs = require("fs");
 const { king } = require("../.././json/emoji.json");
 const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 
-
 module.exports = {
 
 	name: "admin-list",
@@ -31,7 +30,6 @@ module.exports = {
                 \`veuillez patienter\`.`)
 				.setTimestamp()
 				.setFooter({ text: "Admin-list" })
-
 			await message.followUp({ embeds: [Embed] }).then(() => {
 
 				let AdminEmbed = new EmbedBuilder()
@@ -43,20 +41,24 @@ module.exports = {
                 ${list.map(m => `> \`${m.user.username}\``).join("\n")}`)
 					.setFooter({ text: "Admin-list" })
 					.setTimestamp()
-
 				setTimeout(() => message.editReply({ embeds: [AdminEmbed] }), 1000)
 			})
 
 		} catch (err) {
+			console.log(`
+			>------------ OUPS UNE ERREUR ------------<
+			
+			UNE ERREUR DANS LA COMMANDE ADMIN-LIST !!
+	  
+			>--------------- L'ERREUR ----------------<
 
-			console.log(`Une erreur dans la commande admin-list`, err);
-
-			fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-				return
-			})
-
+			${err}
+			
+			>-----------------------------------------<
+			`)
+			fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
 			let channel = await bot.channels.cache.get("1041816985920610354")
-			channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+			channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE ADMIN-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
 		}
 	}
 }

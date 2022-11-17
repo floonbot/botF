@@ -8,7 +8,6 @@ module.exports = async bot => {
         if (lstatSync(path + thing).isDirectory()) scanDir(path + thing + '/');
         else {
           const command = require(path + thing);
-          console.log(`Commandes ${thing} chargée `);
           bot.commands.set(command.name, command);
         };
       }

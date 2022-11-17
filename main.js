@@ -4,6 +4,7 @@ const bot = new Discord.Client({ intents })
 const config = require("./config")
 const loadCommands = require("./Loaders/loadCommands")
 const loadEvents = require("./Loaders/loadEvents")
+require(`./Fonctions/anti-crash.js`)();
 
 
 bot.commands = new Discord.Collection()

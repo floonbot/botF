@@ -67,11 +67,9 @@ module.exports = {
             .setDescription("Le gif choisie ne peut être reçus car il peux pas avoir de raison fournie sans le membre définie !!")
             .setColor("#001540")
             .setImage(`attachment://${file.name}`)
-
           setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
         })
       }
-
       if (choix === "punch") {
 
         let punchradom = Math.floor(Math.random() * punch.length);
@@ -87,11 +85,8 @@ module.exports = {
               .setColor("DC00FF")
               .setImage(`attachment://${file.name}`)
               .setTimestamp()
-
             setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
-
           })
-
         } else if (member && reason) {
 
           return await message.followUp({ embeds: [cEmbed] }).then(() => {
@@ -102,7 +97,6 @@ module.exports = {
               .setImage(`attachment://${file.name}`)
               .setDescription(`${message.user.toString()} a punch ${member.user.toString()} pour la raison : \n\`${reason}\``)
               .setTimestamp()
-
             setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
           })
 
@@ -115,7 +109,6 @@ module.exports = {
               .setImage(`attachment://${file.name}`)
               .setDescription(`${message.user.toString()} a punch ${member.user.toString()}`)
               .setTimestamp()
-
             setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
           })
         }
@@ -135,10 +128,8 @@ module.exports = {
               .setColor("DC00FF")
               .setImage(`attachment://${file.name}`)
               .setTimestamp()
-
             setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
           })
-
         } else if (member && reason) {
 
           return await message.followUp({ embeds: [cEmbed] }).then(() => {
@@ -148,10 +139,8 @@ module.exports = {
               .setImage(`attachment://${file.name}`)
               .setDescription(`${message.user.toString()} a kiss ${member.user.toString()} pour la raison : \n\`${reason}\``)
               .setTimestamp()
-
             setTimeout(async () => await message.editReply({ embeds: [Embed], files: [file] }), 2000)
           })
-
         } else if (member && !reason) {
 
           return await message.followUp({ embeds: [cEmbed] }).then(() => {
@@ -255,18 +244,23 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
           .setTimestamp()
           .setFooter({ text: "gif" })
-
         return await message.followUp({ embeds: [mauvais] })
       }
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE GIF !!
 
-      console.log(`Une erreur dans la commande gif`, err)
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
+      >--------------- L'ERREUR ----------------<
 
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE GIF !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

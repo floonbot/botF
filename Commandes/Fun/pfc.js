@@ -57,10 +57,8 @@ module.exports = {
             .setTimestamp()
             .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64, }))
             .setFooter({ text: "pfc" })
-
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "pierre" && joueursB === "pierre") {
 
         return await message.followUp({ embeds: [fpcEmbed] }).then(() => {
@@ -74,10 +72,8 @@ module.exports = {
             .setTimestamp()
             .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64, }))
             .setFooter({ text: "pfc" })
-
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "pierre" && joueursB === "ciseaux") {
 
         await message.followUp({ embeds: [fpcEmbed] })
@@ -91,7 +87,6 @@ module.exports = {
           .setTimestamp()
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64, }))
           .setFooter({ text: "pfc" })
-
         return await message.editReply({ embeds: [Embed] })
       }
 
@@ -110,7 +105,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "feuille" && joueursB === "feuille") {
 
         return await message.followUp({ embeds: [fpcEmbed] }).then(() => {
@@ -126,7 +120,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "feuille" && joueursB === "ciseaux") {
 
         return await message.followUp({ embeds: [fpcEmbed] }).then(() => {
@@ -142,7 +135,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       }
 
       if (joueursH === "ciseaux" && joueursB === "pierre") {
@@ -160,7 +152,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "ciseaux" && joueursB === "ciseaux") {
 
         return await message.followUp({ embeds: [fpcEmbed] }).then(() => {
@@ -176,7 +167,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       } else if (joueursH === "ciseaux" && joueursB === "feuille") {
 
         return await message.followUp({ embeds: [fpcEmbed] }).then(() => {
@@ -192,7 +182,6 @@ module.exports = {
             .setFooter({ text: "pfc" })
           setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
         })
-
       }
 
       if (joueursH !== "feuille" || joueursH !== "ciseaux" || joueursH !== "pierre") {
@@ -204,18 +193,24 @@ module.exports = {
           .setTimestamp()
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64, }))
           .setFooter({ text: "pfc" })
-
         return await message.followUp({ embeds: [Embed] })
       }
+
     } catch (err) {
-      console.log("Une erreur dans la commande pfc.", err)
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE PFC !!
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
+      >--------------- L'ERREUR ----------------<
 
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE PFC !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
 
     }
   }

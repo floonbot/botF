@@ -1,7 +1,7 @@
+const fs = require('fs');
+const Canvas = require("canvas");
 
-const Canvas = require("canvas")
-
-module.exports = async () => {
+module.exports = async (message) => {
 
     try {
 
@@ -30,6 +30,15 @@ module.exports = async () => {
 
 
         console.log("Une erreur dans Fonctions dans le fichier generateCaptcha.", err)
+
+
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+        return
+      })
+
+      let channel = await bot.channels.cache.get("1041816985920610354")
+      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+
 
     }
 }

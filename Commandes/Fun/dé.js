@@ -14,6 +14,7 @@ module.exports = {
   async run(bot, message) {
 
     try {
+
       let min = 1;
       let max = 6;
       let random = Math.floor(Math.random() * (max - min)) + min;
@@ -31,7 +32,6 @@ module.exports = {
                 \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "Dé" })
-
       await message.followUp({ embeds: [déEmbed] }).then(() => {
 
         déEmbed = new EmbedBuilder()
@@ -41,21 +41,24 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
           .setTimestamp()
           .setFooter({ text: "Dé" })
-
         setTimeout(async () => await message.editReply({ embeds: [déEmbed] }), 1000)
       })
 
-
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE Dé !!
 
-      console.log(`Une erreur dans la commande dé`, err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE Dé !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

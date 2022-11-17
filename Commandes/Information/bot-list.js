@@ -29,7 +29,6 @@ module.exports = {
           \`Veuillez patienter\``)
         .setTimestamp()
         .setFooter({ text: "bot-list" })
-
       await message.followUp({ embeds: [botEmbed] }).then(() => {
 
         let botEmbed = new EmbedBuilder()
@@ -41,21 +40,24 @@ module.exports = {
                  ${list}`)
           .setFooter({ text: "Bot list" })
           .setTimestamp()
-
         setTimeout(() => message.editReply({ embeds: [botEmbed] }), 2000)
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE BOT-LIST !!
 
-      console.log(`Une erreur dans la commande bot-list`, err);
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BOT-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
 
   }

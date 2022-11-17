@@ -29,7 +29,6 @@ module.exports = async bot => {
     const rest = new REST({ version: "10" }).setToken(bot.token)
 
     await rest.put(Routes.applicationCommands(bot.user.id), { body: commands })
-    console.log("les slashcommandes son crées avec succès")
   } catch (err) {
 
     console.log("Une erreur dans les loaders dans le fichier loadSlashCommands.", err)

@@ -48,7 +48,7 @@ module.exports = {
  
                 > Name : \`${message.guild.name}\`
                 > ID : \`${message.guild.id}\`
-                > Description : pas de description
+                > Description : \`${message.guild.description}\`
                 > Créateur : <@${message.guild.ownerId}>
                 > Boost : ${message.guild.premiumSubscriptionCount}
                 > Créer le : ${message.guild.createdAt}

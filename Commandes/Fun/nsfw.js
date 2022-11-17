@@ -27,6 +27,7 @@ module.exports = {
     if (!message.channel.nsfw) return message.reply("Ce n'est pas un salon nsfw")
 
     try {
+
       await message.deferReply()
 
       const cEmbed = new Discord.EmbedBuilder()
@@ -79,20 +80,24 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
           .setTimestamp()
           .setFooter({ text: "NSFW" })
-
         return await message.editReply({ embeds: [mauvais] })
       }
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE NSFW !!
 
-      console.log("Une erreur dans la commande nsfw.", err)
+      >--------------- L'ERREUR ----------------<
 
-      fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-        return
-      })
-
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE NSFW !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
 
 
     }

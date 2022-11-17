@@ -51,16 +51,25 @@ module.exports = {
       })
 
     } catch (err) {
+      console.log(`
+      >------------ OUPS UNE ERREUR ------------<
+      
+      UNE ERREUR DANS LA COMMANDE EMOJI !!
 
-      console.log(`Une erreur dans la commande emojie`, err)
-      message.channel.send({ content: `Je ne peux pas copie l'emoji`, ephemeral: true })
+      >--------------- L'ERREUR ----------------<
+
+      ${err}
+      
+      >-----------------------------------------<
+      `)
+      message.reply({ content: `Je ne peux pas copie l'emoji`, ephemeral: true })
 
       fs.writeFile("./erreur.txt", `${err.stack}`, () => {
         return
       })
 
       let channel = await bot.channels.cache.get("1041816985920610354")
-      channel.send({ content: `⚠️ Une erreur est apparue ! Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+      channel.send({ content: `⚠️ Une erreur est apparue !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
   }
 }

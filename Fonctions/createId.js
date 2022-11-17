@@ -1,18 +1,26 @@
+const fs = require('fs');
+module.exports = async (prefix, message) => {
 
-module.exports = async prefix => {
+  try {
 
-    try {
+    let caracters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]
+    let ID = [];
+    for (let i = 0; i < 10; i++) ID.push(caracters[Math.floor(Math.random() * caracters.length)])
 
-        let caracters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]
-        let ID = [];
-        for (let i = 0; i < 10; i++) ID.push(caracters[Math.floor(Math.random() * caracters.length)])
+    return `${prefix}-${ID.join("")}`;
 
-        return `${prefix}-${ID.join("")}`;
+  } catch (err) {
 
-    } catch (err) {
+    console.log("Une erreur dans Fonctions dans le fichier createId.", err)
 
 
-        console.log("Une erreur dans Fonctions dans le fichier createId.", err)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
+      return
+    })
 
-    }
+    let channel = await bot.channels.cache.get("1041816985920610354")
+    channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
+
+
+  }
 }
