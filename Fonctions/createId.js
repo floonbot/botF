@@ -10,17 +10,19 @@ module.exports = async (prefix, message) => {
     return `${prefix}-${ID.join("")}`;
 
   } catch (err) {
+    console.log(`
+    >------------ OUPS UNE ERREUR ------------<
+    
+    UNE ERREUR DANS L'EVENT CREATEID !!
 
-    console.log("Une erreur dans Fonctions dans le fichier createId.", err)
+    >--------------- L'ERREUR ----------------<
 
-
-    fs.writeFile("./erreur.txt", `${err.stack}`, () => {
-      return
-    })
-
+    ${err}
+    
+    >-----------------------------------------<
+    `)
+    fs.writeFile("./erreur.txt", `${err.stack}`, () => { return })
     let channel = await bot.channels.cache.get("1041816985920610354")
-    channel.send({ content: `⚠️ Une erreur est apparue  Sur le  ${message.guild.name} !`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
-
-
+    channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT CREATEID !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
   }
 }

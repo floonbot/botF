@@ -1,1 +1,11 @@
-Error: ENOENT: no such file or directory, stat 'C:\Users\Floon\OneDrive\Bureau\bot\ddd'
+TypeError: Cannot read properties of null (reading 'match')
+    at Object.run (C:\Users\Floon\OneDrive\Bureau\bot\Commandes\setDesCommandes\setstatus.js:47:57)
+    at module.exports (C:\Users\Floon\OneDrive\Bureau\bot\Events\interactionCreate.js:80:21)
+    at Client.emit (node:events:527:28)
+    at InteractionCreateAction.handle (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\client\actions\InteractionCreate.js:81:12)
+    at Object.module.exports [as INTERACTION_CREATE] (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\client\websocket\handlers\INTERACTION_CREATE.js:4:36)
+    at WebSocketManager.handlePacket (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\client\websocket\WebSocketManager.js:352:31)
+    at WebSocketShard.onPacket (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\client\websocket\WebSocketShard.js:480:22)
+    at WebSocketShard.onMessage (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\discord.js\src\client\websocket\WebSocketShard.js:320:10)
+    at callListener (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\ws\lib\event-target.js:290:14)
+    at WebSocket.onMessage (C:\Users\Floon\OneDrive\Bureau\bot\node_modules\ws\lib\event-target.js:209:9)

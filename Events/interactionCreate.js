@@ -26,6 +26,13 @@ module.exports = async (bot, interaction) => {
         await interaction.respond(entry === "" ? sortie.map(c => ({ name: c, value: c })) : sortie.map(c => ({ name: c, value: c })))
       }
 
+      if (interaction.commandName === "setstatus") {
+
+        let choices = ["Listening", "Playing", "Competing", "Watching", "Streaming"]
+        let sortie = choices.filter(c => c.includes(entry))
+        await interaction.respond(entry === "" ? sortie.map(c => ({ name: c, value: c })) : sortie.map(c => ({ name: c, value: c })))
+      }
+
       if (interaction.commandName === "gif") {
 
         let choices = ["kill", "kiss", "badass", "punch"]
@@ -241,8 +248,12 @@ module.exports = async (bot, interaction) => {
       let channel = await bot.channels.cache.get("1041816985920610354")
       channel.send({ content: `⚠️ UNE ERREUR DANS L'EVENT TICKET !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
+
+
   }
 }
+
+
 
 
 

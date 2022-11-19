@@ -59,6 +59,5 @@ module.exports = {
       let channel = await bot.channels.cache.get("1041816985920610354")
       channel.send({ content: `⚠️ UNE ERREUR DANS LA COMMANDE BOT-LIST !!`, files: [{ attachment: './erreur.txt', name: 'erreur.txt', description: "L'erreur obtenue" }] })
     }
-
   }
 }
