@@ -38,7 +38,7 @@ module.exports = {
     await message.deferReply()
 
     let commande = args.getString("commande")
-    if (commande !== "antiraid" && commande !== "capatcha" && commande !== "goodbye" && commande !== "logs" && commande !== "suggest" && commande !== "welcome") {
+    if (commande !== "antiraid" && commande !== "captcha" && commande !== "goodbye" && commande !== "logs" && commande !== "suggest" && commande !== "welcome") {
 
       let mauvais = new Discord.EmbedBuilder()
         .setTitle(`**__Les set commandes disponible __**`)

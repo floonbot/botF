@@ -25,6 +25,57 @@ module.exports = {
           if (!categories.includes(command.category)) categories.push(command.category)
         })
 
+        const row = new Discord.ActionRowBuilder()
+          .addComponents(
+            new Discord.SelectMenuBuilder()
+              .setCustomId('help')
+              .setPlaceholder('Choix')
+              .addOptions(
+                {
+
+                  label: "Select pour toute l'accueil",
+                  description: 'accueil',
+                  value: 'choix7',
+                },
+                {
+
+                  label: 'Select pour toute les commandes',
+                  description: 'Toute les commandes',
+                  value: 'choix1',
+                },
+                {
+
+                  label: "Select pour les commandes d'information 👆🏻",
+                  description: 'Commande information',
+                  value: 'choix3',
+                },
+                {
+
+                  label: 'Select pour les commandes xp 💹',
+                  description: 'Commande xp',
+                  value: 'choix2',
+                },
+                {
+
+                  label: 'Select pour les setcommandes 🗃️',
+                  description: 'Set des commandes',
+                  value: 'choix6',
+                },
+                {
+
+                  label: "Select pour les commandes fun 🥳",
+                  description: 'Commande fun ',
+                  value: 'choix4',
+                },
+                {
+
+                  label: "Select pour les commandes modérateur 🧑🏻‍⚖️",
+                  description: 'Commande modérateur',
+                  value: 'choix5',
+                }
+              )
+          )
+
         let botEmbed = new Discord.EmbedBuilder()
           .setColor("#FF5D00")
           .setTitle(`Chargement de la commande bot-info !!`)
@@ -38,23 +89,17 @@ module.exports = {
           .setFooter({ text: "help" })
         await message.followUp({ embeds: [botEmbed] }).then(async () => {
 
-          let Embed = new Discord.EmbedBuilder()
+          let Embed1 = new Discord.EmbedBuilder()
             .setColor("#0070FF")
-            .setTitle(`Info des commandes`)
             .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
-            .setDescription(`${infoE} **__Nombre de commandes et catégories__**
+            .setDescription(`${infoE} **__Bienvenue sur la commande help__**
 
                     > Commands disponibles : \`${bot.commands.size}\`
                     > Catégories disponibles : \`${categories.length}\``)
             .setTimestamp()
             .setFooter({ text: "Commandes du bot" })
 
-          await categories.sort().forEach(async cat => {
-
-            let commands = bot.commands.filter(cmd => cmd.category === cat)
-            Embed.addFields({ name: `${cat}`, value: `${commands.map(cmd => `\`${cmd.name}\` : ${cmd.description}`).join("\n")}` })
-          })
-          setTimeout(async () => await message.editReply({ embeds: [Embed] }), 2000)
+          setTimeout(async () => await message.editReply({ embeds: [Embed1], components: [row] }), 2000)
         })
       }
 

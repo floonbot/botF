@@ -7,7 +7,7 @@ module.exports = {
   name: "règlement",
   description: "Choisir le salon pour mettre un règlement",
   permission: PermissionFlagsBits.Administrator,
-  category: "🤴🏻Admin",
+  category: "🧑🏻‍⚖️Modération",
   dm: false,
   options: [
     {

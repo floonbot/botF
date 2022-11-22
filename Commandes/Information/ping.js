@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
+const moment = require("moment");
+require("moment-duration-format");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { pingE, TimeE } = require("../.././json/emoji.json");
 
@@ -16,6 +18,10 @@ module.exports = {
     await message.deferReply()
 
     try {
+
+      const ping = Date.now() - message.createdAt;
+      const api_ping = bot.ws.ping;
+      const uptime = moment.duration(message.client.uptime).format(" D[d], H[h], m[m], s[s]");
 
       const row = new ActionRowBuilder()
         .addComponents(
@@ -45,9 +51,9 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ dynamic: true, size: 64 }))
           .setDescription(`
                     
-          > ${pingE} **Bot :** \`${bot.ws.ping}\` ms 
-          > ${pingE} **API :** \`${Date.now() - message.createdTimestamp - 400}\` ms
-          > ${TimeE} **Temps Uptime :** ${Math.round(bot.uptime / (1000 * 60 * 60)) + "h " + (Math.round(bot.uptime / (1000 * 60)) % 60) + "m " + (Math.round(bot.uptime / 1000) % 60) + "s "}`)
+          > ${pingE} **Bot :** \`${ping}\` ms 
+          > ${pingE} **API :** \`${api_ping}\` ms
+          > ${TimeE} **Temps Uptime :** ${uptime}`)
           .setTimestamp()
           .setFooter({ text: "Ping" })
         setTimeout(() => message.editReply({ embeds: [pingEmbed], components: [row] }), 1000)

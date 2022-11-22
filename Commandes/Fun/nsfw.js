@@ -10,7 +10,7 @@ module.exports = {
   description: "envoye une image nsfw",
   permission: "Aucune",
   dm: false,
-  category: "🔞Nsfw",
+  category: "🥳Fun",
   options: [
     {
       type: "string",
